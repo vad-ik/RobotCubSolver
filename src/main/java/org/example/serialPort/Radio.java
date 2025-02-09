@@ -11,10 +11,21 @@ public class Radio {
         this.freq = freq;
         arduino = new Arduino(port, freq);
     }
-    public void writeString(String string){
+    public void writeString(String string) throws BadRotationExeption {
         arduino.serialWrite(string);
+
+        throw new BadRotationExeption("мотор не смог повернуть куб");
+//        String ans=arduino.serialRead();
+//        if (ans=="1"){
+//            throw new BadRotationExeption("мотор не смог повернуть куб");
+//        }
     }
     public void close(){
         arduino.closeConnection();
+    }
+    public class BadRotationExeption extends Exception {
+        public BadRotationExeption(String message) {
+            super(message);
+        }
     }
 }

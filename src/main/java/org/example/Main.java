@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.UI.MyUI;
 import org.example.serialPort.Radio;
 import org.example.solver.Cub;
 import org.example.solver.Side;
@@ -11,12 +12,15 @@ import java.util.Random;
 public class Main {
     //  System.out.println(cub.solver.toString());
 
-
+//    public static Radio radio;
     public static Radio radio = new Radio("COM52", 9600);
 
     public static void main(String[] args) {
 
-
+        MyUI ui=new MyUI();
+//        solveCub();
+    }
+    static void solveCub(){
         Solver solver = new Solver();
         Cub cub = new Cub();
 
@@ -25,7 +29,11 @@ public class Main {
         chesk(cub);
 
 
-        radio.writeString(cub.solver.toString());
+        try {
+            radio.writeString(cub.solver.toString());
+        } catch (Radio.BadRotationExeption e) {
+            System.out.println(e);
+        }
 
 
         radio.close();
