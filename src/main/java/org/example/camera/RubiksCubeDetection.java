@@ -5,10 +5,12 @@ import org.bytedeco.opencv.global.opencv_core;
 import org.bytedeco.opencv.opencv_core.*;
 import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.global.opencv_highgui;
+import org.example.UI.MyException;
 import org.example.solver.Cub;
 import org.example.solver.Side;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -16,7 +18,7 @@ import java.util.Scanner;
 import static org.bytedeco.opencv.global.opencv_core.mean;
 
 public class RubiksCubeDetection {
-    static Photographer photo = new Photographer(0);
+   public static Photographer photo;
 
     public static void main(String[] args) {
         while (true) {
@@ -35,10 +37,13 @@ public class RubiksCubeDetection {
     Mat dstMat = new Mat(4, 1, opencv_core.CV_32FC2);
 
     Mat image;
+    public SettingCamera setting=new SettingCamera();
+    RubiksCubeDetection(boolean debug)  {
 
-    RubiksCubeDetection(boolean debug) {
-        float[] point;
         if (debug) {
+
+            setting.camPort=0;
+            photo = new Photographer(setting.camPort);
             image = photo.getNext();
 
 
@@ -46,42 +51,42 @@ public class RubiksCubeDetection {
             opencv_highgui.imshow("Original Image", image);
             opencv_highgui.waitKey(0);
             Scanner scanner = new Scanner(System.in);
-            point = new float[]{scanner.nextFloat(), scanner.nextFloat(),//левый верхний0
+            setting.point = new float[]{scanner.nextFloat(), scanner.nextFloat(),//левый верхний0
                     scanner.nextFloat(), scanner.nextFloat(),//центр верхний2
                     scanner.nextFloat(), scanner.nextFloat(),//правый верхний4
                     scanner.nextFloat(), scanner.nextFloat(),//правый нижний6
                     scanner.nextFloat(), scanner.nextFloat(),//центр нижний8
                     scanner.nextFloat(), scanner.nextFloat()//левый нижний10
             };
+            try {
+                SettingCamera.saveToFile(setting,"setting");
+            } catch (IOException e) {
+                new MyException("не удалось сохранить настройки");
+            }
         } else {
-            point = new float[]{1, 1
-                    , 1, 1
-                    , 1, 1
-                    , 1, 1
-                    , 1, 1
-                    , 1, 1
-//                    , ,//левый верхний0
-//                    , ,//центр верхний2
-//                    , ,//правый верхний4
-//                    , ,//правый нижний6
-//                    , ,//центр нижний8
-//                    , //левый нижний10
-            };
+            try {
+                SettingCamera.loadFromFile("setting");
+            } catch (IOException e) {
+
+                new MyException("не удалось экспортировать настройки");
+
+            }
+
+            photo = new Photographer(setting.camPort);
         }
 
-
         FloatIndexer srcIndexer = srcMat.createIndexer();
-        srcIndexer.put(0, 0, point[0], point[1]); // Точка 1 (x, y)
-        srcIndexer.put(1, 0, point[2], point[3]); // Точка 2 (x, y)
-        srcIndexer.put(2, 0, point[8], point[9]); // Точка 3 (x, y)
-        srcIndexer.put(3, 0, point[10], point[11]);  // Точка 4 (x, y)
+        srcIndexer.put(0, 0, setting.point[0], setting.point[1]); // Точка 1 (x, y)
+        srcIndexer.put(1, 0, setting.point[2], setting.point[3]); // Точка 2 (x, y)
+        srcIndexer.put(2, 0, setting.point[8], setting.point[9]); // Точка 3 (x, y)
+        srcIndexer.put(3, 0, setting.point[10], setting.point[11]);  // Точка 4 (x, y)
 
 
         FloatIndexer srcIndexer2 = srcMat2.createIndexer();
-        srcIndexer2.put(0, 0, point[2], point[3]); // Точка 1 (x, y)
-        srcIndexer2.put(1, 0, point[4], point[5]); // Точка 2 (x, y)
-        srcIndexer2.put(2, 0, point[6], point[7]); // Точка 3 (x, y)
-        srcIndexer2.put(3, 0, point[8], point[9]);  // Точка 4 (x, y)
+        srcIndexer2.put(0, 0, setting.point[2], setting.point[3]); // Точка 1 (x, y)
+        srcIndexer2.put(1, 0, setting.point[4], setting.point[5]); // Точка 2 (x, y)
+        srcIndexer2.put(2, 0, setting.point[6], setting.point[7]); // Точка 3 (x, y)
+        srcIndexer2.put(3, 0, setting.point[8], setting.point[9]);  // Точка 4 (x, y)
     }
 
 
@@ -178,9 +183,6 @@ public class RubiksCubeDetection {
                 if (debug) {
                     System.out.println(detectColor(square, debug));
                 }
-//                opencv_highgui.imshow(i+" "+j, square);
-
-
             }
         }
     }

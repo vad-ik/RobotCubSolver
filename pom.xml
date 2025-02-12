@@ -24,6 +24,11 @@
             <artifactId>your-library</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.12.1</version>
+        </dependency>
 
     </dependencies>
     <properties>

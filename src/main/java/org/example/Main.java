@@ -1,6 +1,8 @@
 package org.example;
 
+import org.example.UI.MyException;
 import org.example.UI.MyUI;
+import org.example.camera.ColorScanner;
 import org.example.serialPort.Radio;
 import org.example.solver.Cub;
 import org.example.solver.Side;
@@ -12,28 +14,31 @@ import java.util.Random;
 public class Main {
     //  System.out.println(cub.solver.toString());
 
-//    public static Radio radio;
-    public static Radio radio = new Radio("COM52", 9600);
+    public static ColorScanner scanner;
+    public static Radio radio;
+    //    public static Radio radio = new Radio("COM52", 9600);
+    public static Cub cub;
 
     public static void main(String[] args) {
 
-        MyUI ui=new MyUI();
+
+        cub = new Cub(6);
+        MyUI ui = new MyUI();
+
+
 //        solveCub();
     }
-    static void solveCub(){
-        Solver solver = new Solver();
-        Cub cub = new Cub();
 
-        cubСonfuse(cub);
+    public static void solveCub() throws Radio.BadRotationExeption {
+        Solver solver = new Solver();
+//        Cub cub = new Cub();
+//
+//        cubСonfuse(cub);
         solver.solve(cub);
         chesk(cub);
 
 
-        try {
-            radio.writeString(cub.solver.toString());
-        } catch (Radio.BadRotationExeption e) {
-            System.out.println(e);
-        }
+        radio.writeString(cub.solver.toString());
 
 
         radio.close();
