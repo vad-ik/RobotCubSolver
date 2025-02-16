@@ -227,6 +227,7 @@ public class RubiksCubeDetection {
                     if (debug) {System.out.println(i * 3 + j + 1);}
                 }
                 if (debug) {
+                    System.out.println("color:"+num+" " +i+" "+j);
                     opencv_highgui.imshow("block Image"+num+" " +i+" "+j, square);
                     System.out.println(myColor);
                 }
@@ -257,6 +258,9 @@ public class RubiksCubeDetection {
 //        } else if (red > 200 && green > 100 && green < 200 && blue < 100) {
 //            return "orange";
 //        }
+//        rgbDistance = Math.abs(myColor.getRed() - colorI.getRed() +
+//                Math.abs(myColor.getGreen() - colorI.getGreen()) +
+//                Math.abs(myColor.getBlue() - colorI.getBlue())
         return "orange";
     }
 }
