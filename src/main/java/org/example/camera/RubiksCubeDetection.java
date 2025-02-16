@@ -5,6 +5,7 @@ import org.bytedeco.opencv.global.opencv_core;
 import org.bytedeco.opencv.opencv_core.*;
 import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.global.opencv_highgui;
+
 import org.example.UI.MyException;
 import org.example.solver.Cub;
 import org.example.solver.Side;
@@ -56,13 +57,9 @@ public class RubiksCubeDetection {
                 new MyException("не удалось сохранить настройки");
             }
         } else {
-            try {
-                SettingCamera.loadFromFile("setting");
-            } catch (IOException e) {
 
-                new MyException("не удалось экспортировать настройки");
+            setting= SettingCamera.loadFromFile("setting");
 
-            }
 
             photo = new Photographer(setting.camPort);
         }
@@ -89,17 +86,20 @@ public class RubiksCubeDetection {
         srcIndexer2.put(2, 0, point[10], point[11]); // Точка 3 (x, y)
         srcIndexer2.put(3, 0, point[8], point[9]);  // Точка 4 (x, y)
     }
+    public void getNextPhoto(){
+        image = photo.getNext();
+    }
 
-
-    void nextPhoto(Cub cub, boolean debug) {
+    public void nextPhoto(Cub cub, boolean debug) {
         if (!debug) {
             image = photo.getNext();
         }
         // Заполняем dstMat с помощью FloatIndexer
-        getEdge(srcMat,  image, 1, 3, cub, debug);
+        getEdge(srcMat,  image, 1, 3, cub, debug,1);
         // Заполняем dstMat с помощью FloatIndexer
-        getEdge(srcMat2,  image, 0, 2, cub, debug);
+        getEdge(srcMat2,  image, 0, 2, cub, debug,2);
         if (debug) {
+            drawPoint();
             opencv_highgui.waitKey(0);
             opencv_highgui.destroyAllWindows();
         }
@@ -112,19 +112,25 @@ public class RubiksCubeDetection {
         opencv_imgproc.warpPerspective(image, warped, transformMatrix, new Size(200, 200));
         return warped;
     }
-    void getEdge(Mat srcMat, Mat image, int iMin, int iMax, Cub cub, boolean debug) {
+    void getEdge(Mat srcMat, Mat image, int iMin, int iMax, Cub cub, boolean debug,int num) {
 
 
         // Вычисляем матрицу перспективного преобразования
         Mat warped =getTransform(image,srcMat,dstMat);
         // Разделяем грань на 9 квадратов и распознаем цвета
-        recognizeColors(warped, iMin, iMax, cub, debug);
+        recognizeColors(warped, iMin, iMax, cub, debug,num);
         if (debug) {
-            drawPoints(image, srcMat);
-            // Отображение результата
-            opencv_highgui.imshow("Original Image" + iMin, image);
             opencv_highgui.imshow("Warped Face" + iMin, warped);
         }
+
+    }
+    void drawPoint(){
+
+        drawPoints(image, srcMat);
+        drawPoints(image, srcMat2);
+            // Отображение результата
+            opencv_highgui.imshow("Original Image" , image);
+
     }
     public void drawPoints(Mat image, Mat points) {
         // Создаем индексер для доступа к данным points
@@ -143,9 +149,62 @@ public class RubiksCubeDetection {
             // Рисуем точку
             opencv_imgproc.circle(image, new Point((int) x, (int) y), radius, color, thickness, opencv_imgproc.LINE_AA, 0);
         }
+        drawGrid( image,  points);
+    }
+    public void drawGrid(Mat image, Mat points) {
+        // Создаем индексер для доступа к данным points
+        FloatIndexer indexer = points.createIndexer();
+
+        // Получаем координаты углов четырехугольника
+        float x1 = indexer.get(0, 0, 0); // Левый верхний
+        float y1 = indexer.get(0, 0, 1);
+        float x2 = indexer.get(1, 0, 0); // Правый верхний
+        float y2 = indexer.get(1, 0, 1);
+        float x3 = indexer.get(3, 0, 0); // Левый нижний
+        float y3 = indexer.get(3, 0, 1);
+        float x4 = indexer.get(2, 0, 0); // Правый нижний
+        float y4 = indexer.get(2, 0, 1);
+
+        // Цвет линий сетки (BGR формат)
+        Scalar gridColor = new Scalar(0, 255, 0, 0); // Зеленый цвет
+
+        // Толщина линии
+        int thickness = 2;
+
+        // Рисуем вертикальные линии
+        for (int i = 1; i < 3; i++) {
+            float t = i / 3.0f; // Параметр интерполяции (0.33, 0.66)
+
+            // Верхняя точка вертикальной линии
+            float topX = x1 + t * (x2 - x1);
+            float topY = y1 + t * (y2 - y1);
+
+            // Нижняя точка вертикальной линии
+            float bottomX = x3 + t * (x4 - x3);
+            float bottomY = y3 + t * (y4 - y3);
+
+            // Рисуем линию
+            opencv_imgproc.line(image, new Point((int) topX, (int) topY), new Point((int) bottomX, (int) bottomY), gridColor, thickness, opencv_imgproc.LINE_AA, 0);
+        }
+
+        // Рисуем горизонтальные линии
+        for (int i = 1; i < 3; i++) {
+            float t = i / 3.0f; // Параметр интерполяции (0.33, 0.66)
+
+            // Левая точка горизонтальной линии
+            float leftX = x1 + t * (x3 - x1);
+            float leftY = y1 + t * (y3 - y1);
+
+            // Правая точка горизонтальной линии
+            float rightX = x2 + t * (x4 - x2);
+            float rightY = y2 + t * (y4 - y2);
+
+            // Рисуем линию
+            opencv_imgproc.line(image, new Point((int) leftX, (int) leftY), new Point((int) rightX, (int) rightY), gridColor, thickness, opencv_imgproc.LINE_AA, 0);
+        }
     }
     // Функция для распознавания цветов на грани
-    private void recognizeColors(Mat face, int iMin, int iMax, Cub cub, boolean debug) {
+    private void recognizeColors(Mat face, int iMin, int iMax, Cub cub, boolean debug,int num) {
         int rows = face.rows();
         int cols = face.cols();
         // Разделяем грань на 9 квадратов (3x3)
@@ -159,15 +218,17 @@ public class RubiksCubeDetection {
                 // Вырезаем квадрат
                 int border = 10;
                 Mat square = new Mat(face, new Rect(x1 + border, y1 + border, x2 - x1 - border, y2 - y1 - border));
+                String myColor=detectColor(square, debug);
                 if (iMin == 0) {
-                    cub.sides[Cub.SideNumber.right.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(detectColor(square, debug)).ordinal();
+                    cub.sides[Cub.SideNumber.right.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
                     if (debug) {System.out.println(i * 3 + j + 1);}
                 } else {
-                    cub.sides[Cub.SideNumber.front.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(detectColor(square, debug)).ordinal();
+                    cub.sides[Cub.SideNumber.front.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
                     if (debug) {System.out.println(i * 3 + j + 1);}
                 }
                 if (debug) {
-                    System.out.println(detectColor(square, debug));
+                    opencv_highgui.imshow("block Image"+num+" " +i+" "+j, square);
+                    System.out.println(myColor);
                 }
             }
         }
@@ -180,7 +241,7 @@ public class RubiksCubeDetection {
         double green = meanColor.get(1);
         double red = meanColor.get(2);
         if (debug) {
-            System.out.println(red + " " + green + " " + blue);
+            System.out.println("rgb("+red + ", " + green + ", " + blue+")");
         }
         // Определяем цвет на основе средних значений
 //        if (red > 200 && green > 200 && blue > 200) {

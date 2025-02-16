@@ -46,6 +46,7 @@ public class SettingCamUI extends JFrame {
             public void windowClosing(WindowEvent e) {
                 Main.scanner.detector.setting.camPort = nowPort;
                 Main.scanner.detector.setting.point = imagePanel.nowPoint;
+                photographer.end();
                 try {
                     SettingCamera.saveToFile(Main.scanner.detector.setting,"setting");
                 } catch (IOException ex) {

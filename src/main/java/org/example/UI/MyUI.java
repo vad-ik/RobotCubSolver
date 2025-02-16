@@ -2,11 +2,13 @@ package org.example.UI;
 
 import org.example.Main;
 import org.example.camera.ColorScanner;
+import org.example.camera.SettingCamera;
 import org.example.serialPort.Radio;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MyUI {
     public JPanel err;
@@ -20,7 +22,8 @@ public class MyUI {
         construct(frame);
         frame.setVisible(true); // Делаем окно видимым
     }
-    void construct(JFrame frame){
+
+    void construct(JFrame frame) {
         JPanel generalPanel = new JPanel();
         generalPanel.setLayout(new BoxLayout(generalPanel, BoxLayout.PAGE_AXIS));
 
@@ -36,22 +39,39 @@ public class MyUI {
         generalPanel.add(err);
         frame.add(generalPanel);
     }
-    JPanel setting(){
-        JPanel settingPanel=new JPanel();
-        JButton setting=new JButton("настроить камеру");
+
+    JPanel setting() {
+        JPanel settingPanel = new JPanel();
+        JButton setting = new JButton("настроить камеру");
         setting.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SettingCamUI();
+                SettingCamUI settingCamUI=new SettingCamUI();
+
+                ImagePanel.nowPoint =Main.scanner.detector.setting.point;
 //                Main.scanner = new ColorScanner(false);
 
             }
         });
         settingPanel.add(setting);
+
+        JButton colorTest = new JButton("проверить цвета");
+        colorTest.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Main.scanner = new ColorScanner(false);
+                Main.scanner.detector.getNextPhoto();
+                Main.scanner.detector.nextPhoto(Main.cub, true);
+            }
+        });
+        settingPanel.add(colorTest);
+
+
         return settingPanel;
     }
 
-    void addControlButtons(JPanel mainPAnel){
+    void addControlButtons(JPanel mainPAnel) {
         JPanel panel = new JPanel();
         addBut(panel, "l");
         addBut(panel, "r");
