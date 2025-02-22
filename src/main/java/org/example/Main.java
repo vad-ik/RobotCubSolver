@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.AI.DeepCubeSolver;
+import org.example.AI.TransformToAI;
 import org.example.UI.MyException;
 import org.example.UI.MyUI;
 import org.example.camera.ColorScanner;
@@ -22,13 +24,79 @@ public class Main {
     public static void main(String[] args) {
 
 
-        cub = new Cub(6);
-        MyUI ui = new MyUI();
+        cub = new Cub();
+//        MyUI ui = new MyUI();
 
 
 //        solveCub();
+        solveAI();
     }
+    public static void solveAI(){
+        System.out.println(cub.toString2());
+        cubСonfuse(cub);
+        System.out.println(cub.toString2());
+        Long start=System.currentTimeMillis();
+        TransformToAI transformer=new TransformToAI();
+       String state=transformer.transform(cub);
+        String ans=DeepCubeSolver.send(state);
 
+        Long finish=System.currentTimeMillis();
+        System.out.println((finish-start)/1000);
+        System.out.println(ans);
+        ans=(ans.split("\\["))[1].split("]")[0];
+
+        rotateAI(ans);
+        System.out.println(cub.toString2());
+    }
+    static void rotateAI(String str){
+        String[] step=str.split(", ");
+        System.out.println(step.length);
+        for (int i = 0; i < step.length; i++) {
+            int num;
+
+                   String[] nowStep= step[i].split("_");
+                   if (nowStep[1].equals("1\"")){
+                       num=1;
+                   }else {
+                       num=3;
+                   }
+                   switch (nowStep[0]){
+                       case "\"U" :
+
+                           for (int j = 0; j <num ; j++) {
+                               cub.u();
+
+                           }
+                           break;
+                       case "\"F" :
+                           for (int j = 0; j <num ; j++) {
+                               cub.f();
+                           }
+                           break;
+                       case "\"L" :
+                           for (int j = 0; j <num ; j++) {
+                               cub.l();
+                           }
+                           break;
+                       case "\"R" :
+                           for (int j = 0; j <num ; j++) {
+                               cub.r();
+                           }
+                           break;
+                       case "\"D" :
+                           for (int j = 0; j <num ; j++) {
+                               cub.d();
+                           }
+                           break;
+                       case "\"B" :
+                           for (int j = 0; j <num ; j++) {
+                               cub.b();
+                           }
+                           break;
+
+                   }
+        }
+    }
     public static void solveCub() throws Radio.BadRotationExeption {
         Solver solver = new Solver();
 //        Cub cub = new Cub();

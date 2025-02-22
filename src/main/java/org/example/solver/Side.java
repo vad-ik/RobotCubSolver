@@ -25,14 +25,15 @@ public class Side {
         }
     }
     public enum Color {
-        yellow,
-        orange,
-        blue,
-        red,
-        green,
         white,
+        orange,
+        green,
+        red,
+        blue,
+        yellow,
         Non
     }
+
     public int[] cell = new int[10];//нумирация с еденицы, а то запутаюсь ниже раскройка кубика
     //      up
     // left front right back

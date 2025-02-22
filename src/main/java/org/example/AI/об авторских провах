@@ -1,0 +1,23 @@
+https://deepcube.igb.uci.edu/
+
+git https://github.com/forestagostinelli/DeepCubeA
+If you find this research useful to your work, please cite the following papers:
+
+Solving the Rubik's Cube with Deep Reinforcement Learning and Search https://deepcube.igb.uci.edu/static/files/SolvingTheRubiksCubeWithDeepReinforcementLearningAndSearch_Final.pdf
+Forest Agostinelli*, Stephen McAleer*, Alexander Shmakov*, Pierre Baldi
+Nature Machine Intelligence, Volume 1, 2019
+
+Solving the Rubik's Cube with Approximate Policy Iteration https://openreview.net/pdf?id=Hyfn2jCcKm
+Stephen McAleer*, Forest Agostinelli*, Alexander Shmakov*, Pierre Baldi
+In Proceedings of the 7th International Conference on Learning Representations (ICLR), 2019
+
+@article{agostinelli2019solving,
+  title={Solving the Rubik’s cube with deep reinforcement learning and search},
+  author={Agostinelli, Forest and McAleer, Stephen and Shmakov, Alexander and Baldi, Pierre},
+  journal={Nature Machine Intelligence},
+  volume={1},
+  number={8},
+  pages={356--363},
+  year={2019},
+  publisher={Nature Publishing Group UK London}
+}
