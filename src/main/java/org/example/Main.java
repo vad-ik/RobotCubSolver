@@ -25,11 +25,11 @@ public class Main {
 
 
         cub = new Cub();
-//        MyUI ui = new MyUI();
+        MyUI ui = new MyUI();
 
 
 //        solveCub();
-        solveAI();
+//        solveAI();
     }
     public static void solveAI(){
         System.out.println(cub.toString2());

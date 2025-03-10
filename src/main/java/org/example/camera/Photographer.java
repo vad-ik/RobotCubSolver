@@ -4,32 +4,39 @@ import org.bytedeco.javacv.*;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.example.UI.MyException;
 
+import java.util.Arrays;
+
 public class Photographer {
     FrameGrabber grabber;
     Frame frame;
 
     public Photographer(int cam)  {
         this.grabber = new OpenCVFrameGrabber(cam);
+        grabber.setImageWidth(1920);  // Попробуй стандартное разрешение для Logitech C922
+        grabber.setImageHeight(1080);
+        grabber.setFrameRate(30);
+        grabber.setFormat("dshow");
+        grabber.setPixelFormat(org.bytedeco.opencv.global.opencv_core.CV_8UC3); // Указание цветного формата
+
 
         try {
 
             grabber.start();
         } catch (FrameGrabber.Exception e) {
+
             new MyException("не подключена камера");
+            throw new RuntimeException(e);
         }
 
     }
     public static int getNumberOfConnectedCameras() {
-        int cameraIndex = 0;
-        while (true) {
-            try (OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(cameraIndex)) {
-                grabber.start();
-                grabber.stop();
-                cameraIndex++;
-            } catch (FrameGrabber.Exception e) {
-                return cameraIndex;
-            }
+
+        try {
+            return VideoInputFrameGrabber .getDeviceDescriptions().length;
+        } catch (FrameGrabber.Exception e) {
+            throw new RuntimeException(e);
         }
+
     }
 
     void getFrame() {
