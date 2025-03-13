@@ -31,7 +31,7 @@ public class SettingCamUI extends JFrame {
         setTitle("Image setting");
         setSize(1150, 600);
 //         Таймер для обновления изображения с камеры
-        Timer timer = new Timer(500, e -> updateImage());
+        Timer timer = new Timer(30, e -> updateImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -56,6 +56,8 @@ public class SettingCamUI extends JFrame {
                 timer.stop();
             }
         });
+
+
     }
 
 
@@ -81,7 +83,12 @@ public class SettingCamUI extends JFrame {
 
 
         int numberOfCameras = Photographer.getNumberOfConnectedCameras();
-        RubiksCubeDetection.photo = new Photographer(0);
+        if (RubiksCubeDetection.photo ==null) {
+            RubiksCubeDetection.photo = new Photographer(0);
+            photographer = RubiksCubeDetection.photo;
+            timer.start();
+
+        }
 //        timer.start();
         for (int i = 0; i < numberOfCameras; i++) {
             comboBox.addItem(i); // Добавляем элементы от 0 до N
@@ -92,10 +99,13 @@ public class SettingCamUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 timer.stop();
-                RubiksCubeDetection.photo.end();
                 int selectedNumber = (int) comboBox.getSelectedItem();
                 nowPort = selectedNumber;
-                RubiksCubeDetection.photo = new Photographer(selectedNumber);
+                if (RubiksCubeDetection.photo !=null) {
+                    RubiksCubeDetection.photo.end();
+                }
+                    RubiksCubeDetection.photo = new Photographer(selectedNumber);
+
                 photographer = RubiksCubeDetection.photo;
                 timer.start();
                 updateMiniImage();
@@ -142,11 +152,13 @@ public class SettingCamUI extends JFrame {
         }
         video.removeAll();
         video.add(imagePanel, BorderLayout.CENTER);
-        revalidate();
-        repaint();
+//        revalidate();
+//        repaint();
+        updateMiniImage();
     }
 
     void updateMiniImage() {
+
         Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2);
         Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2);
         RubiksCubeDetection.updateSrcMat(ImagePanel.nowPoint, srcMat, srcMat2);

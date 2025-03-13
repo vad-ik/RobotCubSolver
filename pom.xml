@@ -23,12 +23,23 @@
             <groupId>com.example</groupId>
             <artifactId>your-library</artifactId>
             <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/java/library/arduino.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.12.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.sarxos</groupId>
+            <artifactId>webcam-capture</artifactId>
+            <version>0.3.12</version>
+        </dependency>
+
+
+
+
 
     </dependencies>
     <properties>

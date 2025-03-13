@@ -1,3 +1,0 @@
-mvn install:install-file -Dfile=path/to/your/arduino.jar -DgroupId=com.example -DartifactId=your-library -Dversion=1.0.0 -Dpackaging=jar
-
-

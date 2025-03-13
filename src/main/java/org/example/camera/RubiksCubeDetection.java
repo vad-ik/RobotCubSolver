@@ -37,7 +37,11 @@ public class RubiksCubeDetection {
         if (debug) {
 
             setting.camPort=0;
+            if (photo !=null) {
+                photo.end();
+            }
             photo = new Photographer(setting.camPort);
+
             image = photo.getNext();
 
             // Отображение результата
@@ -60,8 +64,12 @@ public class RubiksCubeDetection {
 
             setting= SettingCamera.loadFromFile("setting");
 
-
+            if (photo !=null) {
+                photo.end();
+            }
             photo = new Photographer(setting.camPort);
+
+
         }
 
         updateSrcMat(setting.point,srcMat,srcMat2);
