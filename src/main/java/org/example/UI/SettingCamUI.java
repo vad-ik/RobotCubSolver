@@ -31,7 +31,7 @@ public class SettingCamUI extends JFrame {
         setTitle("Image setting");
         setSize(1150, 600);
 //         Таймер для обновления изображения с камеры
-        Timer timer = new Timer(30, e -> updateImage());
+        Timer timer = new Timer(200, e -> updateImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -46,14 +46,15 @@ public class SettingCamUI extends JFrame {
             public void windowClosing(WindowEvent e) {
                 Main.scanner.detector.setting.camPort = nowPort;
                 Main.scanner.detector.setting.point = imagePanel.nowPoint;
+                RubiksCubeDetection.photo.end();
                 photographer.end();
+                timer.stop();
                 try {
                     SettingCamera.saveToFile(Main.scanner.detector.setting,"setting");
                 } catch (IOException ex) {
                     new MyException("не удалось сохранить настройки");
                 }
 
-                timer.stop();
             }
         });
 

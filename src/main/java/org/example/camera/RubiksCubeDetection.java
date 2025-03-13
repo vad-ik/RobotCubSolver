@@ -6,11 +6,16 @@ import org.bytedeco.opencv.opencv_core.*;
 import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.global.opencv_highgui;
 
+import org.bytedeco.opencv.opencv_core.Point;
 import org.example.UI.MyException;
 import org.example.solver.Cub;
 import org.example.solver.Side;
+
+import java.awt.*;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.List;
 
 import static org.bytedeco.opencv.global.opencv_core.mean;
 
@@ -245,30 +250,50 @@ public class RubiksCubeDetection {
     public String detectColor(Mat mat, boolean debug) {
         // Вычисляем среднее значение по каждому каналу (BGR)
         Scalar meanColor = mean(mat);
+        int blue = (int) meanColor.get(0);
+        int green = (int) meanColor.get(1);
+        int red = (int) meanColor.get(2);
 
-        double blue = meanColor.get(0);
-        double green = meanColor.get(1);
-        double red = meanColor.get(2);
+        Color targetColor=new Color( red,  green,  blue);
         if (debug) {
             System.out.println("rgb("+red + ", " + green + ", " + blue+")");
         }
-        // Определяем цвет на основе средних значений
-//        if (red > 200 && green > 200 && blue > 200) {
-//            return "white";
-//        } else if (red > 200 && green > 200 && blue < 100) {
-//            return "yellow";
-//        } else if (red < 100 && green > 200 && blue < 100) {
-//            return "green";
-//        } else if (red < 100 && green < 100 && blue > 200) {
-//            return "blue";
-//        } else if (red > 200 && green < 100 && blue < 100) {
-//            return "red";
-//        } else if (red > 200 && green > 100 && green < 200 && blue < 100) {
-//            return "orange";
-//        }
-//        rgbDistance = Math.abs(myColor.getRed() - colorI.getRed() +
-//                Math.abs(myColor.getGreen() - colorI.getGreen()) +
-//                Math.abs(myColor.getBlue() - colorI.getBlue())
-        return "orange";
+
+        String closestColorName = findClosestColorName(targetColor);
+        System.out.println("Ближайший цвет: " + closestColorName);
+return closestColorName;
     }
+
+
+    private static final Map<Color, String> COLOR_NAMES = Map.of(
+            Color.RED, "red",
+            Color.ORANGE, "orange",
+            Color.YELLOW, "yellow",
+            Color.WHITE, "white",
+            Color.BLUE, "blue",
+            Color.GREEN, "green"
+    );
+   
+
+    // Функция для вычисления расстояния между двумя цветами
+    public static double distance(Color from, Color to) {
+        return Math.sqrt(
+                Math.pow(from.getRed() - to.getRed(), 2)
+                        + Math.pow(from.getGreen() - to.getGreen(), 2)
+                        + Math.pow(from.getBlue() - to.getBlue(), 2)
+        );
+    }
+
+    // Функция для поиска названия ближайшего цвета
+    public static String findClosestColorName(Color targetColor) {
+        return COLOR_NAMES.entrySet().stream()
+                .min((entry1, entry2) -> Double.compare(
+                        distance(targetColor, entry1.getKey()),
+                        distance(targetColor, entry2.getKey())
+                ))
+                .map(Map.Entry::getValue) // Извлекаем название цвета
+                .orElse("Неизвестный цвет"); // Если список пуст
+    }
+
+
 }
