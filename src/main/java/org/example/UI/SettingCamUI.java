@@ -26,12 +26,15 @@ public class SettingCamUI extends JFrame {
     int nowPort = 0;
     ImagePanel imagePanel;
     boolean ferst=true;
+    ImageIcon icon1= new ImageIcon();
+    ImageIcon icon2= new ImageIcon();
+
     public SettingCamUI() {
 
         setTitle("Image setting");
         setSize(1150, 600);
 //         Таймер для обновления изображения с камеры
-        Timer timer = new Timer(200, e -> updateImage());
+        Timer timer = new Timer(500, e -> updateImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -44,8 +47,8 @@ public class SettingCamUI extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                Main.scanner.detector.setting.camPort = nowPort;
-                Main.scanner.detector.setting.point = imagePanel.nowPoint;
+                Main.scanner.detector.setting.setCamPort(nowPort);
+                Main.scanner.detector.setting.setPoint(imagePanel.nowPoint);
                 RubiksCubeDetection.photo.end();
                 photographer.end();
                 timer.stop();
@@ -80,20 +83,19 @@ public class SettingCamUI extends JFrame {
         text.add(camNum);
         buttonPanel.add(text);
         // Создаем выпадающий список
-        JComboBox<Integer> comboBox = new JComboBox<>();
 
 
-        int numberOfCameras = Photographer.getNumberOfConnectedCameras();
+        java.util.List<String> numberOfCameras = Photographer.getConnectedCameras();
         if (RubiksCubeDetection.photo ==null) {
             RubiksCubeDetection.photo = new Photographer(0);
             photographer = RubiksCubeDetection.photo;
             timer.start();
 
         }
-//        timer.start();
-        for (int i = 0; i < numberOfCameras; i++) {
-            comboBox.addItem(i); // Добавляем элементы от 0 до N
-        }
+        JComboBox<String> comboBox = new JComboBox<>(numberOfCameras.toArray(new String[0]));
+
+
+
 
         // Добавляем обработчик событий
         comboBox.addActionListener(new ActionListener() {
@@ -138,24 +140,40 @@ public class SettingCamUI extends JFrame {
     }
 
     JPanel edgesPanel() {
-        //updateMiniImage();
+
+
+
+        JLabel imagePanel1 = new JLabel();
+        JLabel imagePanel2 = new JLabel();
+
+        imagePanel1.setIcon(icon1);
+        imagePanel2.setIcon(icon2);
+        microVideo.removeAll();
+        microVideo.add(imagePanel1, BorderLayout.WEST);
+        microVideo.add(imagePanel2, BorderLayout.SOUTH);
         return microVideo;
     }
-
+private static short iter=0;
     private void updateImage() {
         Mat mat = photographer.getNext();
         BufferedImage image = matToBufferedImage(mat);
+
         imagePanel = new ImagePanel(image,this);
+
+
         if (ferst){
-//285.0, 65.0, 343.0, 70.0, 394.0, 61.0, 288.0, 151.0, 344.0, 158.0, 389.0, 147.0
-            ImagePanel.nowPoint = Main.scanner.detector.setting.point;
+            ImagePanel.nowPoint = Main.scanner.detector.setting.getPoint();
             ferst=false;
         }
         video.removeAll();
         video.add(imagePanel, BorderLayout.CENTER);
-//        revalidate();
-//        repaint();
-        updateMiniImage();
+if (iter%10==0) {
+    updateMiniImage();
+    iter=-1;
+}
+iter++;
+        revalidate();
+        repaint();
     }
 
     void updateMiniImage() {
@@ -163,24 +181,25 @@ public class SettingCamUI extends JFrame {
         Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2);
         Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2);
         RubiksCubeDetection.updateSrcMat(ImagePanel.nowPoint, srcMat, srcMat2);
+
         Mat micro1 = RubiksCubeDetection.getTransform(photographer.getNext(), srcMat, RubiksCubeDetection.dstMat);
+
         Mat micro2 = RubiksCubeDetection.getTransform(photographer.getNext(), srcMat2, RubiksCubeDetection.dstMat);
+
         BufferedImage image1 = matToBufferedImage(micro1);
-        JLabel imagePanel1 = new JLabel();
-        imagePanel1.setIcon(new ImageIcon(image1));
         BufferedImage image2 = matToBufferedImage(micro2);
-        JLabel imagePanel2 = new JLabel();
-        imagePanel2.setIcon(new ImageIcon(image2));
-        microVideo.removeAll();
-        microVideo.add(imagePanel1, BorderLayout.WEST);
-        microVideo.add(imagePanel2, BorderLayout.SOUTH);
-        revalidate();
-        repaint();
+        icon1.setImage(image1);
+        icon2.setImage(image2);
+        microVideo.revalidate();
+        microVideo.repaint();
+
+
     }
 
     private static BufferedImage matToBufferedImage(Mat mat) {
         Java2DFrameConverter converter = new Java2DFrameConverter();
         return converter.convert(new OpenCVFrameConverter.ToMat().convert(mat));
     }
+
 
 }

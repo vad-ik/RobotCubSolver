@@ -6,7 +6,9 @@ import org.example.serialPort.Radio;
 import org.example.solver.Cub;
 
 public class ColorScanner {
-    public RubiksCubeDetection detector;
+   public RubiksCubeDetection detector;
+
+
     public ColorScanner(boolean debug){
         detector=new RubiksCubeDetection(debug);
 
@@ -57,7 +59,7 @@ public class ColorScanner {
         sendToArduino(cub);
         detector.nextPhoto(cub, false);
 
-
+        System.out.println(cub.toString2());
     }
     void sendToArduino(Cub cub) throws Radio.BadRotationExeption {
         Main.radio.writeString(cub.solver.toString());

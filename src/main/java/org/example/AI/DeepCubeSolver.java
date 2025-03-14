@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 
 public class DeepCubeSolver {
     public static String send(String state) {
-        String ans;
+
         try {
             // URL сервера
             URL url = new URL("https://deepcube.igb.uci.edu/solve");

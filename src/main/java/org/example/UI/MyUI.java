@@ -2,11 +2,9 @@ package org.example.UI;
 
 import org.example.Main;
 import org.example.camera.ColorScanner;
-import org.example.camera.SettingCamera;
 import org.example.serialPort.Radio;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -48,7 +46,7 @@ public class MyUI {
             public void actionPerformed(ActionEvent e) {
                 SettingCamUI settingCamUI=new SettingCamUI();
 
-                ImagePanel.nowPoint =Main.scanner.detector.setting.point;
+                ImagePanel.nowPoint = Main.scanner.detector.setting.getPoint();
 //                Main.scanner = new ColorScanner(false);
 
             }
@@ -101,7 +99,7 @@ public class MyUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Main.solveCub();
+                    Main.solveAI();
                 } catch (Radio.BadRotationExeption ex) {
 
                     err.add(new JTextArea("не удалось повернуть"));

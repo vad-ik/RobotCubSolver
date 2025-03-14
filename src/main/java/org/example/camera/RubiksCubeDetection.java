@@ -15,7 +15,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.List;
 
 import static org.bytedeco.opencv.global.opencv_core.mean;
 
@@ -41,11 +40,11 @@ public class RubiksCubeDetection {
 
         if (debug) {
 
-            setting.camPort=0;
+            setting.setCamPort(0);
             if (photo !=null) {
                 photo.end();
             }
-            photo = new Photographer(setting.camPort);
+            photo = new Photographer(setting.getCamPort());
 
             image = photo.getNext();
 
@@ -53,13 +52,13 @@ public class RubiksCubeDetection {
             opencv_highgui.imshow("Original Image", image);
             opencv_highgui.waitKey(0);
             Scanner scanner = new Scanner(System.in);
-            setting.point = new float[]{scanner.nextFloat(), scanner.nextFloat(),//левый верхний0
+            setting.setPoint(new float[]{scanner.nextFloat(), scanner.nextFloat(),//левый верхний0
                     scanner.nextFloat(), scanner.nextFloat(),//центр верхний2
                     scanner.nextFloat(), scanner.nextFloat(),//правый верхний4
                     scanner.nextFloat(), scanner.nextFloat(),//правый нижний6
                     scanner.nextFloat(), scanner.nextFloat(),//центр нижний8
                     scanner.nextFloat(), scanner.nextFloat()//левый нижний10
-            };
+            });
             try {
                 SettingCamera.saveToFile(setting,"setting");
             } catch (IOException e) {
@@ -72,12 +71,12 @@ public class RubiksCubeDetection {
             if (photo !=null) {
                 photo.end();
             }
-            photo = new Photographer(setting.camPort);
+            photo = new Photographer(setting.getCamPort());
 
 
         }
 
-        updateSrcMat(setting.point,srcMat,srcMat2);
+        updateSrcMat(setting.getPoint(),srcMat,srcMat2);
 
         FloatIndexer dstIndexer = dstMat.createIndexer();
         dstIndexer.put(0, 0, 0.0f, 0.0f);     // Точка 1 (x, y)
@@ -241,7 +240,8 @@ public class RubiksCubeDetection {
                 }
                 if (debug) {
                     System.out.println("color:"+num+" " +i+" "+j);
-                    opencv_highgui.imshow("block Image"+num+" " +i+" "+j, square);
+                    opencv_highgui.imshow("block Image"+num+" " +i+" "+j+myColor, square);
+                    opencv_highgui.resizeWindow("block Image"+num+" " +i+" "+j+myColor, 300, 100);
                     System.out.println(myColor);
                 }
             }

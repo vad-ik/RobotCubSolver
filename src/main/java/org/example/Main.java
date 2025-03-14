@@ -18,7 +18,9 @@ public class Main {
 
     public static ColorScanner scanner;
     public static Radio radio;
-    //    public static Radio radio = new Radio("COM52", 9600);
+    private static String comPort = "COM52";
+    private static int freq = 9600;
+
     public static Cub cub;
 
     public static void main(String[] args) {
@@ -31,72 +33,74 @@ public class Main {
 //        solveCub();
 //        solveAI();
     }
-    public static void solveAI(){
-        System.out.println(cub.toString2());
-        cubСonfuse(cub);
-        System.out.println(cub.toString2());
-        Long start=System.currentTimeMillis();
-        TransformToAI transformer=new TransformToAI();
-       String state=transformer.transform(cub);
-        String ans=DeepCubeSolver.send(state);
 
-        Long finish=System.currentTimeMillis();
-        System.out.println((finish-start)/1000);
-        System.out.println(ans);
-        ans=(ans.split("\\["))[1].split("]")[0];
+    public static void solveAI() throws Radio.BadRotationExeption {
 
-        rotateAI(ans);
-        System.out.println(cub.toString2());
+        TransformToAI transformer = new TransformToAI();
+        String state = transformer.transform(cub);
+        String ans = DeepCubeSolver.send(state);
+        ans = (ans.split("\\["))[1].split("]")[0];
+
+        String path = rotateAI(ans);
+        radio = new Radio(comPort, freq);
+        radio.writeString(cub.solver.toString());
+
+
+        radio.close();
     }
-    static void rotateAI(String str){
-        String[] step=str.split(", ");
-        System.out.println(step.length);
+
+    static String rotateAI(String str) {
+        cub.solver = new StringBuilder();
+        String[] step = str.split(", ");
+
         for (int i = 0; i < step.length; i++) {
             int num;
 
-                   String[] nowStep= step[i].split("_");
-                   if (nowStep[1].equals("1\"")){
-                       num=1;
-                   }else {
-                       num=3;
-                   }
-                   switch (nowStep[0]){
-                       case "\"U" :
+            String[] nowStep = step[i].split("_");
+            if (nowStep[1].equals("1\"")) {
+                num = 1;
+            } else {
+                num = 3;
+            }
+            switch (nowStep[0]) {
+                case "\"U":
 
-                           for (int j = 0; j <num ; j++) {
-                               cub.u();
+                    for (int j = 0; j < num; j++) {
+                        cub.u();
 
-                           }
-                           break;
-                       case "\"F" :
-                           for (int j = 0; j <num ; j++) {
-                               cub.f();
-                           }
-                           break;
-                       case "\"L" :
-                           for (int j = 0; j <num ; j++) {
-                               cub.l();
-                           }
-                           break;
-                       case "\"R" :
-                           for (int j = 0; j <num ; j++) {
-                               cub.r();
-                           }
-                           break;
-                       case "\"D" :
-                           for (int j = 0; j <num ; j++) {
-                               cub.d();
-                           }
-                           break;
-                       case "\"B" :
-                           for (int j = 0; j <num ; j++) {
-                               cub.b();
-                           }
-                           break;
+                    }
+                    break;
+                case "\"F":
+                    for (int j = 0; j < num; j++) {
+                        cub.f();
+                    }
+                    break;
+                case "\"L":
+                    for (int j = 0; j < num; j++) {
+                        cub.l();
+                    }
+                    break;
+                case "\"R":
+                    for (int j = 0; j < num; j++) {
+                        cub.r();
+                    }
+                    break;
+                case "\"D":
+                    for (int j = 0; j < num; j++) {
+                        cub.d();
+                    }
+                    break;
+                case "\"B":
+                    for (int j = 0; j < num; j++) {
+                        cub.b();
+                    }
+                    break;
 
-                   }
+            }
         }
+        return cub.solver.toString();
     }
+
     public static void solveCub() throws Radio.BadRotationExeption {
         Solver solver = new Solver();
 //        Cub cub = new Cub();

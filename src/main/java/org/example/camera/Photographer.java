@@ -7,21 +7,24 @@ import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.example.UI.MyException;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Photographer {
 
-    Java2DFrameConverter java2DConverter = new Java2DFrameConverter();
-    OpenCVFrameConverter.ToMat openCVConverter = new OpenCVFrameConverter.ToMat();
-    Webcam webcam;
-    public Photographer(int cam)  {
-        webcam= Webcam.getDefault();
+    private Java2DFrameConverter java2DConverter = new Java2DFrameConverter();
+    private OpenCVFrameConverter.ToMat openCVConverter = new OpenCVFrameConverter.ToMat();
+    private Webcam webcam;
+
+    public Photographer(int cam) {
+        webcam = Webcam.getWebcams().get(cam);
+        webcam = Webcam.getDefault();
         if (webcam != null) {
             System.out.println("Камера найдена: " + webcam.getName());
 
             // Устанавливаем разрешение (например, VGA)
             webcam.setViewSize(WebcamResolution.VGA.getSize());
-
 
 
 //            System.out.println(WebcamResolution.VGA.getSize());
@@ -37,7 +40,6 @@ public class Photographer {
             }
 
 
-
         } else {
 
             new MyException("не подключена камера");
@@ -45,18 +47,17 @@ public class Photographer {
         }
 
     }
-    public static int getNumberOfConnectedCameras() {
 
-return Webcam.getWebcams().size();
+    public static List<String> getConnectedCameras() {
+        List<String> names=new ArrayList<>();
+        List<Webcam> web= Webcam.getWebcams();
+        for (int i = 0; i < web.size(); i++) {
+            names.add(web.get(i).getName());
+        }
+        return names;
 
     }
-
-
-
-
-    OpenCVFrameConverter.ToMat converter = new OpenCVFrameConverter.ToMat();
-
-    public Mat getNext(){
+    public Mat getNext() {
 
         // Захват изображения
         Mat mat = openCVConverter.convert(java2DConverter.convert(webcam.getImage()));
@@ -66,12 +67,12 @@ return Webcam.getWebcams().size();
 
         return mat;
     }
-    public void end(){
 
-            webcam.close();
+    public void end() {
+
+        webcam.close();
 
     }
-
 
 
 }
