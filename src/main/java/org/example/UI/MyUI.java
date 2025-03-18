@@ -10,7 +10,7 @@ public class MyUI {
     public JPanel err;
 
     public MyUI() {
-        JFrame frame = new JFrame("My First GUI"); // Для окна нужна "рама" - Frame
+        JFrame frame = new JFrame("CubSolvers"); // Для окна нужна "рама" - Frame
         // стандартное поведение при закрытии окна - завершение приложения
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 300); // размеры окна
@@ -54,7 +54,7 @@ public class MyUI {
         JButton colorTest = new JButton("проверить цвета");
         colorTest.addActionListener(_ -> {
 
-            Main.scanner = new ColorScanner(false);
+
             Main.scanner.detector.getNextPhoto();
             Main.scanner.detector.nextPhoto(Main.cub, true);
         });
@@ -80,7 +80,6 @@ public class MyUI {
         scanBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.scanner = new ColorScanner(false);
 
                     Main.scanner.scan(Main.cub);
 

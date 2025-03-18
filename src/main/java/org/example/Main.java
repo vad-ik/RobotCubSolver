@@ -17,15 +17,14 @@ public class Main {
 
     public static ColorScanner scanner;
     public static Radio radio;
-    private static String comPort = "COM5";
 
 
     public static Cub cub;
 
     public static void main(String[] args) {
 
-
-        radio = new Radio("COM3");
+        scanner = new ColorScanner(false);
+        radio = new Radio();
         cub = new Cub();
         new MyUI();
 

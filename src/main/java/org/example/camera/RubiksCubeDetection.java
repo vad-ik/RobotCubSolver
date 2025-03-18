@@ -28,7 +28,7 @@ public class RubiksCubeDetection {
     public static Mat dstMat = new Mat(4, 1, opencv_core.CV_32FC2);
 
     Mat image;
-    public SettingCamera setting=new SettingCamera();
+    public SaveSettings setting=new SaveSettings();
     RubiksCubeDetection(boolean debug)  {
 
         if (debug) {
@@ -53,13 +53,13 @@ public class RubiksCubeDetection {
                     scanner.nextFloat(), scanner.nextFloat()//левый нижний10
             });
             try {
-                SettingCamera.saveToFile(setting,"setting");
+                SaveSettings.saveToFile(setting,"setting");
             } catch (IOException e) {
                 new MyException("не удалось сохранить настройки");
             }
         } else {
 
-            setting= SettingCamera.loadFromFile("setting");
+            setting= SaveSettings.loadFromFile("setting");
 
             if (photo !=null) {
                 photo.end();

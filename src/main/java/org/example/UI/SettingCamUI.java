@@ -5,10 +5,10 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.opencv.global.opencv_core;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.example.Main;
-import org.example.camera.ColorScanner;
+
 import org.example.camera.Photographer;
 import org.example.camera.RubiksCubeDetection;
-import org.example.camera.SettingCamera;
+import org.example.camera.SaveSettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +31,7 @@ public class SettingCamUI extends JFrame {
 
     public SettingCamUI() {
 
-        setTitle("Image setting");
+        setTitle("Настройки");
         setSize(1150, 600);
 //         Таймер для обновления изображения с камеры
         Timer timer = new Timer(500, e -> updateImage());
@@ -53,7 +53,7 @@ public class SettingCamUI extends JFrame {
                 photographer.end();
                 timer.stop();
                 try {
-                    SettingCamera.saveToFile(Main.scanner.detector.setting,"setting");
+                    SaveSettings.saveToFile(Main.scanner.detector.setting,"setting");
                 } catch (IOException ex) {
                     new MyException("не удалось сохранить настройки");
                 }
@@ -98,41 +98,33 @@ public class SettingCamUI extends JFrame {
 
 
         // Добавляем обработчик событий
-        comboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                timer.stop();
-                int selectedNumber = (int) comboBox.getSelectedItem();
-                nowPort = selectedNumber;
-                if (RubiksCubeDetection.photo !=null) {
-                    RubiksCubeDetection.photo.end();
-                }
-                    RubiksCubeDetection.photo = new Photographer(selectedNumber);
-
-                photographer = RubiksCubeDetection.photo;
-                timer.start();
-                updateMiniImage();
+        comboBox.addActionListener(_ -> {
+            timer.stop();
+            int selectedNumber = (int) comboBox.getSelectedItem();
+            nowPort = selectedNumber;
+            if (RubiksCubeDetection.photo !=null) {
+                RubiksCubeDetection.photo.end();
             }
+                RubiksCubeDetection.photo = new Photographer(selectedNumber);
+
+            photographer = RubiksCubeDetection.photo;
+            timer.start();
+            updateMiniImage();
         });
         buttonPanel.add(comboBox);
-        Main.scanner = new ColorScanner(false);
-        addPicselBut(buttonPanel, 1, 4);
-        addPicselBut(buttonPanel, 4, 7);
+
+        addPixelBut(buttonPanel, 1, 4);
+        addPixelBut(buttonPanel, 4, 7);
         return buttonPanel;
 
     }
 
-    void addPicselBut(JPanel buttonPanel, int start, int finish) {
+    void addPixelBut(JPanel buttonPanel, int start, int finish) {
         JPanel panel = new JPanel();
         for (int i = start; i < finish; i++) {
             JButton button = new JButton(String.valueOf(i));
             int finalI = i;
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    imagePanel.nowPointSwitch = (finalI);
-                }
-            });
+            button.addActionListener(_ -> ImagePanel.nowPointSwitch = (finalI));
             panel.add(button);
         }
         buttonPanel.add(panel);

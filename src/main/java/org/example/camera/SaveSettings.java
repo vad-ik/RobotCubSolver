@@ -11,12 +11,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SettingCamera {
+public class SaveSettings {
     private Map<String, Color> colorMap;
     private float[] point = new float[12];
     private int camPort;
+    private String comPort;
 
-    public static void saveToFile(SettingCamera config, String filename) throws IOException {
+
+    public static void saveToFile(SaveSettings config, String filename) throws IOException {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Color.class, new ColorTypeAdapter())
                 .create();
@@ -25,22 +27,22 @@ public class SettingCamera {
         }
     }
 
-    public static SettingCamera loadFromFile(String filename) {
+    public static SaveSettings loadFromFile(String filename) {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Color.class, new ColorTypeAdapter())
                 .create();
         try {
             FileReader reader = new FileReader(filename);
 
-
-            return gson.fromJson(reader, SettingCamera.class);
+            return gson.fromJson(reader, SaveSettings.class);
         } catch (Exception e) {
 
-            new MyException("не удалось экспортировать настройки");
-            SettingCamera set = new SettingCamera();
+            new MyException("не удалось экспортировать настройки, они были заменены на настройки по умолчанию");
+            SaveSettings set = new SaveSettings();
 
             set.setPoint(new float[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
             set.setCamPort(0);
+            set.setComPort("COM3");
             set.setColorMap(new HashMap<>());
             set.getColorMap().put("white", new Color(255, 255, 255));
             set.getColorMap().put("orange", new Color(255, 165, 0));
@@ -76,5 +78,13 @@ public class SettingCamera {
 
     public void setCamPort(int camPort) {
         this.camPort = camPort;
+    }
+
+    public String getComPort() {
+        return comPort;
+    }
+
+    public void setComPort(String comPort) {
+        this.comPort = comPort;
     }
 }

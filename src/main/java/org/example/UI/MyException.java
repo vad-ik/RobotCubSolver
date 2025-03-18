@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class MyException {
     public MyException(String string) {
-        JFrame frame = new JFrame("ошибка"); // Для окна нужна "рама" - Frame
+        JFrame frame = new JFrame("Ошибка"); // Для окна нужна "рама" - Frame
         // стандартное поведение при закрытии окна - завершение приложения
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 100); // размеры окна

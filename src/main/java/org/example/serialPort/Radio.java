@@ -2,7 +2,10 @@ package org.example.serialPort;
 
 
 import com.fazecast.jSerialComm.SerialPort;
+import org.example.Main;
+import org.example.UI.ComPortSelectionUI;
 import org.example.UI.MyException;
+import org.example.camera.SaveSettings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +14,9 @@ import java.io.InputStream;
 public class Radio {
 
     SerialPort sp = null;
-    public Radio(String myPort) {
+    public Radio( ) {
+
+        String myPort=Main.scanner.detector.setting.getComPort();
         SerialPort[] ports = SerialPort.getCommPorts();
 
 
@@ -30,9 +35,14 @@ public class Radio {
                 System.out.println("Port is open :)");
             } else {
                 System.out.println("Failed to open port :(");
+                new MyException("Failed to open port");
             }
 
+        }else {
+new ComPortSelectionUI();
         }
+
+
     }
 
     public void writeString(String string)  {
