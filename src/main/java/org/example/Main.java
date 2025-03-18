@@ -2,7 +2,6 @@ package org.example;
 
 import org.example.AI.DeepCubeSolver;
 import org.example.AI.TransformToAI;
-import org.example.UI.MyException;
 import org.example.UI.MyUI;
 import org.example.camera.ColorScanner;
 import org.example.serialPort.Radio;
@@ -19,7 +18,7 @@ public class Main {
     public static ColorScanner scanner;
     public static Radio radio;
     private static String comPort = "COM5";
-    private static int freq = 9600;
+
 
     public static Cub cub;
 
@@ -28,7 +27,7 @@ public class Main {
 
         radio = new Radio("COM3");
         cub = new Cub();
-        MyUI ui = new MyUI();
+        new MyUI();
 
 
 //        solveCub();
@@ -40,6 +39,7 @@ public class Main {
         TransformToAI transformer = new TransformToAI();
         String state = transformer.transform(cub);
         String ans = DeepCubeSolver.send(state);
+
         ans = (ans.split("\\["))[1].split("]")[0];
 
         String path = rotateAI(ans);
@@ -51,10 +51,10 @@ public class Main {
         cub.solver = new StringBuilder();
         String[] step = str.split(", ");
 
-        for (int i = 0; i < step.length; i++) {
+        for (String string : step) {
             int num;
 
-            String[] nowStep = step[i].split("_");
+            String[] nowStep = string.split("_");
             if (nowStep[1].equals("1\"")) {
                 num = 1;
             } else {
@@ -99,7 +99,7 @@ public class Main {
         return cub.solver.toString();
     }
 
-    public static void solveCub() throws Radio.BadRotationExeption {
+    public static void solveCub()  {
         Solver solver = new Solver();
 //        Cub cub = new Cub();
 //
@@ -128,7 +128,7 @@ public class Main {
         }
     }
 
-    static void cubСonfuse(Cub cub) {
+    static void cubConfuse(Cub cub) {
         Random random = new Random();
         for (int i = 0; i < 1000; i++) {
 

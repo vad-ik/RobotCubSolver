@@ -1,8 +1,6 @@
 package org.example.camera;
 
-import org.bytedeco.opencv.global.opencv_highgui;
 import org.example.Main;
-import org.example.serialPort.Radio;
 import org.example.solver.Cub;
 
 public class ColorScanner {
@@ -13,7 +11,7 @@ public class ColorScanner {
         detector=new RubiksCubeDetection(debug);
 
     }
-    public void scan(Cub cub) throws Radio.BadRotationExeption {//тестовый набор
+    public void scan(Cub cub)  {//тестовый набор
         detector.nextPhoto(cub, false);
         cub.r();
         cub.r();
@@ -61,7 +59,7 @@ public class ColorScanner {
 
         System.out.println(cub.toString2());
     }
-    void sendToArduino(Cub cub) throws Radio.BadRotationExeption {
+    void sendToArduino(Cub cub)  {
         Main.radio.writeString(cub.solver.toString());
         cub.solver=new StringBuilder();
 
@@ -73,11 +71,8 @@ public class ColorScanner {
         Cub cub = new Cub(6);
         System.out.println(cub.toString2());
 
-        try {
             scanner.scan(cub);
-        } catch (Radio.BadRotationExeption e) {
-            System.out.println(e);
-        }
+
 
         System.out.println(cub.toString2());
 

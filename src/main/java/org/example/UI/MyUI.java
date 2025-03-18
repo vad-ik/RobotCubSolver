@@ -2,11 +2,9 @@ package org.example.UI;
 
 import org.example.Main;
 import org.example.camera.ColorScanner;
-import org.example.serialPort.Radio;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MyUI {
     public JPanel err;
@@ -44,7 +42,7 @@ public class MyUI {
         setting.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SettingCamUI settingCamUI=new SettingCamUI();
+                new SettingCamUI();
 
                 ImagePanel.nowPoint = Main.scanner.detector.setting.getPoint();
 //                Main.scanner = new ColorScanner(false);
@@ -54,14 +52,11 @@ public class MyUI {
         settingPanel.add(setting);
 
         JButton colorTest = new JButton("проверить цвета");
-        colorTest.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        colorTest.addActionListener(_ -> {
 
-                Main.scanner = new ColorScanner(false);
-                Main.scanner.detector.getNextPhoto();
-                Main.scanner.detector.nextPhoto(Main.cub, true);
-            }
+            Main.scanner = new ColorScanner(false);
+            Main.scanner.detector.getNextPhoto();
+            Main.scanner.detector.nextPhoto(Main.cub, true);
         });
         settingPanel.add(colorTest);
 
@@ -86,11 +81,9 @@ public class MyUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Main.scanner = new ColorScanner(false);
-                try {
+
                     Main.scanner.scan(Main.cub);
-                } catch (Radio.BadRotationExeption ex) {
-                    err.add(new JTextArea("не удалось повернуть"));
-                }
+
             }
         });
         frame.add(scanBut);

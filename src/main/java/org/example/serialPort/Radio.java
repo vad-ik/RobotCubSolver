@@ -2,18 +2,19 @@ package org.example.serialPort;
 
 
 import com.fazecast.jSerialComm.SerialPort;
+import org.example.UI.MyException;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.io.InputStream;
+
 
 public class Radio {
-    int freq;
-    String port;
 
+    SerialPort sp = null;
     public Radio(String myPort) {
         SerialPort[] ports = SerialPort.getCommPorts();
 
-        SerialPort sp = null;
+
         for (SerialPort port : ports) {
             System.out.println(port.getSystemPortName());
             if (myPort.equals(port.getSystemPortName())) {
@@ -29,44 +30,59 @@ public class Radio {
                 System.out.println("Port is open :)");
             } else {
                 System.out.println("Failed to open port :(");
-                return;
             }
-            try {
-                for (Integer i = 0; i < 5; ++i) {
 
-                    sp.getOutputStream().write(i.byteValue());
+        }
+    }
 
-                    sp.getOutputStream().flush();
-                    System.out.println("Sent number: " + i);
+    public void writeString(String string)  {
+        try {
+            for (int i = 0; i < 5; ++i) {
 
-                    byte[] newData = new byte[sp.bytesAvailable()];
-                    int numRead = sp.readBytes(newData, newData.length);
-                    System.out.println(numRead);
-                    System.out.println(Arrays.toString(newData));
-                    Thread.sleep(1000);
+                sp.getOutputStream().write((byte) i);
+
+                sp.getOutputStream().flush();
+                System.out.println("Sent number: " + i);
+
+                    read();
+
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    void read() {
+        InputStream inputStream = sp.getInputStream();
+        try {
+        StringBuilder response = new StringBuilder();
+        long startTime = System.currentTimeMillis();
+        int timeout=10000;
+        while (System.currentTimeMillis() - startTime < timeout) {
+            if (sp.bytesAvailable() > 0) {
+                byte[] buffer = new byte[sp.bytesAvailable()];
+                int numRead = inputStream.read(buffer);
+                response.append(new String(buffer, 0, numRead));
+
+                // Если в ответе есть символ новой строки, считаем, что строка завершена
+                if (response.toString().contains("\n")) {
+                    break;
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
+            Thread.sleep(10); // Небольшая задержка, чтобы не нагружать процессор
+        }
+if (System.currentTimeMillis() - startTime<timeout) {
+    System.out.println("Response from Arduino: " + response.toString().trim());
+}else {
+    System.out.println("превышен интервал ожидания ответа");
+    new MyException("превышен интервал ожидания ответа");
+
+}
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void writeString(String string) {
-//        arduino.serialWrite(string);
-//
-////        throw new BadRotationExeption("мотор не смог повернуть куб");
-//        String ans=arduino.serialRead();
-//        System.out.println(ans);
-//        if (ans=="1"){
-//            throw new BadRotationExeption("мотор не смог повернуть куб");
-//        }
-    }
 
-    public class BadRotationExeption extends Exception {
-        public BadRotationExeption(String message) {
-            super(message);
-        }
-    }
 }
