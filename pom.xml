@@ -17,14 +17,7 @@
         <dependency>
             <groupId>com.fazecast</groupId>
             <artifactId>jSerialComm</artifactId>
-            <version>[2.0.0,3.0.0)</version>
-        </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>your-library</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/java/library/arduino.jar</systemPath>
+            <version>2.11.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

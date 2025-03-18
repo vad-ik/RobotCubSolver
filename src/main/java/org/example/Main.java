@@ -18,7 +18,7 @@ public class Main {
 
     public static ColorScanner scanner;
     public static Radio radio;
-    private static String comPort = "COM52";
+    private static String comPort = "COM5";
     private static int freq = 9600;
 
     public static Cub cub;
@@ -26,6 +26,7 @@ public class Main {
     public static void main(String[] args) {
 
 
+        radio = new Radio("COM3");
         cub = new Cub();
         MyUI ui = new MyUI();
 
@@ -34,7 +35,7 @@ public class Main {
 //        solveAI();
     }
 
-    public static void solveAI() throws Radio.BadRotationExeption {
+    public static void solveAI()  {
 
         TransformToAI transformer = new TransformToAI();
         String state = transformer.transform(cub);
@@ -42,11 +43,8 @@ public class Main {
         ans = (ans.split("\\["))[1].split("]")[0];
 
         String path = rotateAI(ans);
-        radio = new Radio(comPort, freq);
         radio.writeString(cub.solver.toString());
 
-
-        radio.close();
     }
 
     static String rotateAI(String str) {
@@ -112,8 +110,6 @@ public class Main {
 
         radio.writeString(cub.solver.toString());
 
-
-        radio.close();
     }
 
     static void chesk(Cub cub) {

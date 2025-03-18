@@ -98,12 +98,9 @@ public class MyUI {
         startBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Main.solveAI();
-                } catch (Radio.BadRotationExeption ex) {
 
-                    err.add(new JTextArea("не удалось повернуть"));
-                }
+                    Main.solveAI();
+
             }
         });
         frame.add(startBut);
@@ -116,12 +113,9 @@ public class MyUI {
         newBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    Main.radio.writeString(name);
-                } catch (Radio.BadRotationExeption ex) {
 
-                    err.add(new JTextArea("не удалось повернуть"));
-                }
+                    Main.radio.writeString(name);
+
             }
         });
 

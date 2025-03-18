@@ -21,14 +21,7 @@ import static org.bytedeco.opencv.global.opencv_core.mean;
 public class RubiksCubeDetection {
    public static Photographer photo;
 
-    public static void main(String[] args) {
-        while (true) {
-            Cub cub = new Cub(100);
-            RubiksCubeDetection detector = new RubiksCubeDetection(true);
-            detector.nextPhoto(cub, true);
-            opencv_highgui.waitKey(0);
-        }
-    }
+
 
     Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
     Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
@@ -255,7 +248,7 @@ public class RubiksCubeDetection {
         int red = (int) meanColor.get(2);
 
         Color targetColor=new Color( red,  green,  blue);
-        if (debug) {
+        if (!debug) {
             System.out.println("rgb("+red + ", " + green + ", " + blue+")");
         }
 
@@ -293,6 +286,17 @@ return closestColorName;
                 ))
                 .map(Map.Entry::getValue) // Извлекаем название цвета
                 .orElse("Неизвестный цвет"); // Если список пуст
+    }
+
+    public static void main(String[] args) {
+        Color ye=Color.YELLOW;
+        Color o=Color.ORANGE;
+        System.out.println(o.getRed()+" "+o.getGreen()+" "+o.getBlue());
+        System.out.println(ye.getRed()+" "+ye.getGreen()+" "+ye.getBlue());
+        Color m=new Color(73,124,94);
+        System.out.println(distance(m,o));
+        System.out.println(distance(m,ye));
+
     }
 
 
