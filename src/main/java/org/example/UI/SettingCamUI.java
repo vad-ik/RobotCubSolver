@@ -12,8 +12,6 @@ import org.example.camera.SaveSettings;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -25,7 +23,7 @@ public class SettingCamUI extends JFrame {
     private Photographer photographer;
     int nowPort = 0;
     ImagePanel imagePanel;
-    boolean ferst = true;
+    boolean first = true;
     ImageIcon icon1 = new ImageIcon();
     ImageIcon icon2 = new ImageIcon();
 
@@ -34,7 +32,7 @@ public class SettingCamUI extends JFrame {
         setTitle("Настройки");
         setSize(1150, 600);
 //         Таймер для обновления изображения с камеры
-        Timer timer = new Timer(500, e -> updateImage());
+        Timer timer = new Timer(50, e -> updateImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         timer.start();
@@ -53,7 +51,7 @@ public class SettingCamUI extends JFrame {
                     new MyException("не удалось сохранить настройки");
                 }
                 Main.scanner.detector.setting.setCamPort(nowPort);
-                Main.scanner.detector.setting.setPoint(imagePanel.nowPoint);
+                Main.scanner.detector.setting.setPoint(ImagePanel.nowPoint);
                 RubiksCubeDetection.photo.end();
                 photographer.end();
                 timer.stop();
@@ -153,9 +151,9 @@ public class SettingCamUI extends JFrame {
         imagePanel = new ImagePanel(image, this);
 
 
-        if (ferst) {
+        if (first) {
             ImagePanel.nowPoint = Main.scanner.detector.setting.getPoint();
-            ferst = false;
+            first = false;
         }
         video.removeAll();
         video.add(imagePanel, BorderLayout.CENTER);
