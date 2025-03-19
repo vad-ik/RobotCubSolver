@@ -51,10 +51,11 @@ public class MyUI {
         });
         settingPanel.add(setting);
 
-        JButton colorTest = new JButton("проверить цвета");
+        JButton colorTest = new JButton("проверить цвета(debug)");
         colorTest.addActionListener(_ -> {
 
-
+            Main.scanner.detector.startCam();
+            Main.scanner.detector.updateSetting();
             Main.scanner.detector.getNextPhoto();
             Main.scanner.detector.nextPhoto(Main.cub, true);
         });

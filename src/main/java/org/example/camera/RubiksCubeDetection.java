@@ -13,6 +13,7 @@ import org.example.solver.Side;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -29,6 +30,12 @@ public class RubiksCubeDetection {
 
     Mat image;
     public SaveSettings setting=new SaveSettings();
+    public void startCam(){
+        if (photo !=null) {
+            photo.end();
+        }
+        photo = new Photographer(setting.getCamPort());
+    }
     RubiksCubeDetection(boolean debug)  {
 
         if (debug) {
@@ -59,7 +66,7 @@ public class RubiksCubeDetection {
             }
         } else {
 
-            setting= SaveSettings.loadFromFile("setting");
+            updateSetting();
 
             if (photo !=null) {
                 photo.end();
@@ -76,6 +83,9 @@ public class RubiksCubeDetection {
         dstIndexer.put(1, 0, 200.0f, 0.0f);   // Точка 2 (x, y)
         dstIndexer.put(2, 0, 200.0f, 200.0f); // Точка 3 (x, y)
         dstIndexer.put(3, 0, 0.0f, 200.0f);   // Точка 4 (x, y)
+    }
+    public void updateSetting(){
+        setting= SaveSettings.loadFromFile("setting");
     }
     public static void updateSrcMat(float[] point,Mat srcMat,Mat srcMat2){
         FloatIndexer srcIndexer = srcMat.createIndexer();
@@ -223,7 +233,9 @@ public class RubiksCubeDetection {
                 // Вырезаем квадрат
                 int border = 10;
                 Mat square = new Mat(face, new Rect(x1 + border, y1 + border, x2 - x1 - border, y2 - y1 - border));
-                String myColor=detectColor(square, debug);
+//                String myColor=detectColor(square, debug);
+                String myColor=detectColorHSV(square, debug);
+
                 if (iMin == 0) {
                     cub.sides[Cub.SideNumber.right.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
                     if (debug) {System.out.println(i * 3 + j + 1);}
@@ -258,17 +270,9 @@ return closestColorName;
     }
 
 
-    private static final Map<Color, String> COLOR_NAMES = Map.of(
-            Color.RED, "red",
-            Color.ORANGE, "orange",
-            Color.YELLOW, "yellow",
-            Color.WHITE, "white",
-            Color.BLUE, "blue",
-            Color.GREEN, "green"
-    );
-   
 
-    // Функция для вычисления расстояния между двумя цветами
+
+
     public static double distance(Color from, Color to) {
         return Math.sqrt(
                 Math.pow(from.getRed() - to.getRed(), 2)
@@ -278,14 +282,53 @@ return closestColorName;
     }
 
     // Функция для поиска названия ближайшего цвета
+
+
+    public String detectColorHSV(Mat mat, boolean debug) {
+        // Преобразуем изображение в HSV
+        Mat hsvImage = new Mat();
+        opencv_imgproc.cvtColor(mat, hsvImage, opencv_imgproc.COLOR_BGR2HSV);
+
+        // Вычисляем среднее значение по каждому каналу (HSV)
+        Scalar meanColor = mean(hsvImage);
+        int hue = (int) meanColor.get(0);
+        int saturation = (int) meanColor.get(1);
+        int value = (int) meanColor.get(2);
+
+        if (!debug) {
+            System.out.println("hsv(" + hue + ", " + saturation + ", " + value + ")");
+        }
+// Проверка на белый цвет
+        if (saturation < 30 && value > 200) {
+            return "Белый";
+        }
+        // Сравниваем только Hue (оттенок)
+        String closestColorName = findClosestColorNameByHue(hue);
+        System.out.println("Ближайший цвет: " + closestColorName);
+        return closestColorName;
+    }
+
+    public static String findClosestColorNameByHue(int targetHue) {
+        SaveSettings setting = SaveSettings.loadFromFile("setting");
+        return setting.getColorMap().entrySet().stream()
+                .min(Comparator.comparingDouble(entry -> Math.abs(targetHue - getHue(entry.getValue()))))
+                        .map(Map.Entry::getKey)
+                        .orElse("Неизвестный цвет");
+    }
     public static String findClosestColorName(Color targetColor) {
-        return COLOR_NAMES.entrySet().stream()
+        SaveSettings setting= SaveSettings.loadFromFile("setting");
+        return setting.getColorMap().entrySet().stream()
                 .min((entry1, entry2) -> Double.compare(
-                        distance(targetColor, entry1.getKey()),
-                        distance(targetColor, entry2.getKey())
+                        distance(targetColor, entry1.getValue()),
+                        distance(targetColor, entry2.getValue())
                 ))
-                .map(Map.Entry::getValue) // Извлекаем название цвета
+                .map(Map.Entry::getKey) // Извлекаем название цвета
                 .orElse("Неизвестный цвет"); // Если список пуст
+    }
+    public static int getHue(Color color) {
+        float[] hsv = new float[3];
+        Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsv);
+        return (int) (hsv[0] * 180); // Преобразуем Hue в диапазон 0-180
     }
 
     public static void main(String[] args) {

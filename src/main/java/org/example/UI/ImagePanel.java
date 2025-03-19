@@ -26,9 +26,9 @@ public class ImagePanel extends JLabel {
                     nowPoint[nowPointSwitch * 2 - 2] = x;
                     nowPoint[nowPointSwitch * 2 - 1] = y;
                     System.out.println(Arrays.toString(nowPoint));
-                    UI.updateMiniImage();
+                    //todo обработка происходит через раз
                 }
-                // Здесь можно добавить логику для обработки координат
+
             }
         });
     }

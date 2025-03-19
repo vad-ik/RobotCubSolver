@@ -44,7 +44,7 @@ public class SaveSettings {
             set.setCamPort(0);
             set.setComPort("COM3");
             set.setColorMap(new HashMap<>());
-            set.getColorMap().put("white", new Color(255, 255, 255));
+            set.getColorMap().put("white", new Color(200, 200, 200));
             set.getColorMap().put("orange", new Color(255, 165, 0));
             set.getColorMap().put("green", new Color(0, 128, 0));
             set.getColorMap().put("red", new Color(255, 0, 0));

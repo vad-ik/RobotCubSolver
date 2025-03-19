@@ -25,9 +25,9 @@ public class SettingCamUI extends JFrame {
     private Photographer photographer;
     int nowPort = 0;
     ImagePanel imagePanel;
-    boolean ferst=true;
-    ImageIcon icon1= new ImageIcon();
-    ImageIcon icon2= new ImageIcon();
+    boolean ferst = true;
+    ImageIcon icon1 = new ImageIcon();
+    ImageIcon icon2 = new ImageIcon();
 
     public SettingCamUI() {
 
@@ -37,7 +37,7 @@ public class SettingCamUI extends JFrame {
         Timer timer = new Timer(500, e -> updateImage());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-
+        timer.start();
         photographer = RubiksCubeDetection.photo;
 
         add(video, BorderLayout.EAST);
@@ -47,16 +47,17 @@ public class SettingCamUI extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                try {
+                    SaveSettings.saveToFile(Main.scanner.detector.setting, "setting");
+                } catch (IOException ex) {
+                    new MyException("не удалось сохранить настройки");
+                }
                 Main.scanner.detector.setting.setCamPort(nowPort);
                 Main.scanner.detector.setting.setPoint(imagePanel.nowPoint);
                 RubiksCubeDetection.photo.end();
                 photographer.end();
                 timer.stop();
-                try {
-                    SaveSettings.saveToFile(Main.scanner.detector.setting,"setting");
-                } catch (IOException ex) {
-                    new MyException("не удалось сохранить настройки");
-                }
+
 
             }
         });
@@ -86,7 +87,7 @@ public class SettingCamUI extends JFrame {
 
 
         java.util.List<String> numberOfCameras = Photographer.getConnectedCameras();
-        if (RubiksCubeDetection.photo ==null) {
+        if (RubiksCubeDetection.photo == null) {
             RubiksCubeDetection.photo = new Photographer(0);
             photographer = RubiksCubeDetection.photo;
             timer.start();
@@ -95,17 +96,15 @@ public class SettingCamUI extends JFrame {
         JComboBox<String> comboBox = new JComboBox<>(numberOfCameras.toArray(new String[0]));
 
 
-
-
         // Добавляем обработчик событий
         comboBox.addActionListener(_ -> {
             timer.stop();
-            int selectedNumber = (int) comboBox.getSelectedItem();
+            int selectedNumber = comboBox.getSelectedIndex();
             nowPort = selectedNumber;
-            if (RubiksCubeDetection.photo !=null) {
+            if (RubiksCubeDetection.photo != null) {
                 RubiksCubeDetection.photo.end();
             }
-                RubiksCubeDetection.photo = new Photographer(selectedNumber);
+            RubiksCubeDetection.photo = new Photographer(selectedNumber);
 
             photographer = RubiksCubeDetection.photo;
             timer.start();
@@ -134,7 +133,6 @@ public class SettingCamUI extends JFrame {
     JPanel edgesPanel() {
 
 
-
         JLabel imagePanel1 = new JLabel();
         JLabel imagePanel2 = new JLabel();
 
@@ -145,25 +143,27 @@ public class SettingCamUI extends JFrame {
         microVideo.add(imagePanel2, BorderLayout.SOUTH);
         return microVideo;
     }
-private static short iter=0;
+
+    private static short iter = 0;
+
     private void updateImage() {
         Mat mat = photographer.getNext();
         BufferedImage image = matToBufferedImage(mat);
 
-        imagePanel = new ImagePanel(image,this);
+        imagePanel = new ImagePanel(image, this);
 
 
-        if (ferst){
+        if (ferst) {
             ImagePanel.nowPoint = Main.scanner.detector.setting.getPoint();
-            ferst=false;
+            ferst = false;
         }
         video.removeAll();
         video.add(imagePanel, BorderLayout.CENTER);
-if (iter%10==0) {
-    updateMiniImage();
-    iter=-1;
-}
-iter++;
+        if (iter % 10 == 0) {
+            updateMiniImage();
+            iter = -1;
+        }
+        iter++;
         revalidate();
         repaint();
     }

@@ -18,34 +18,38 @@ public class Photographer {
     private Webcam webcam;
 
     public Photographer(int cam) {
-        webcam = Webcam.getWebcams().get(cam);
-        webcam = Webcam.getDefault();
-        if (webcam != null) {
-            System.out.println("Камера найдена: " + webcam.getName());
 
-            // Устанавливаем разрешение (например, VGA)
-            webcam.setViewSize(WebcamResolution.VGA.getSize());
+        if (Webcam.getWebcams().isEmpty()){
+            new MyException("Камера не подключена");
+        }else {
+            webcam = Webcam.getWebcams().get(cam);
+            webcam = Webcam.getDefault();
+            if (webcam != null) {
+                System.out.println("Камера найдена: " + webcam.getName());
+
+                // Устанавливаем разрешение (например, VGA)
+                webcam.setViewSize(WebcamResolution.VGA.getSize());
 
 
 //            System.out.println(WebcamResolution.VGA.getSize());
 
-            // Открываем камеру
-            webcam.open();
+                // Открываем камеру
+                webcam.open();
 
-            // Захватываем изображение
-            if (webcam.isImageNew()) {
-                webcam.getImage();
+                // Захватываем изображение
+                if (webcam.isImageNew()) {
+                    webcam.getImage();
 
+
+                }
+
+
+            } else {
+
+                new MyException("Камера не подключена");
 
             }
-
-
-        } else {
-
-            new MyException("не подключена камера");
-
         }
-
     }
 
     public static List<String> getConnectedCameras() {
@@ -69,7 +73,6 @@ public class Photographer {
     }
 
     public void end() {
-
         webcam.close();
 
     }
