@@ -9,14 +9,16 @@ import org.example.camera.SaveSettings;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 
 public class Radio {
 
     SerialPort sp = null;
-    public Radio( ) {
 
-        String myPort=Main.scanner.detector.setting.getComPort();
+    public Radio() {
+
+        String myPort = Main.scanner.detector.setting.getComPort();
         SerialPort[] ports = SerialPort.getCommPorts();
 
 
@@ -38,57 +40,52 @@ public class Radio {
                 new MyException("Failed to open port");
             }
 
-        }else {
-new ComPortSelectionUI();
+        } else {
+            new ComPortSelectionUI();
         }
 
 
     }
 
-    public void writeString(String string)  {
+    public void writeString(String string) {
         try {
-            for (int i = 0; i < 5; ++i) {
 
-                sp.getOutputStream().write((byte) i);
+                sp.getOutputStream().write((string).getBytes());
 
                 sp.getOutputStream().flush();
-                System.out.println("Sent number: " + i);
-
-                    read();
-
-
-            }
+                read();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
+
     void read() {
         InputStream inputStream = sp.getInputStream();
         try {
-        StringBuilder response = new StringBuilder();
-        long startTime = System.currentTimeMillis();
-        int timeout=10000;
-        while (System.currentTimeMillis() - startTime < timeout) {
-            if (sp.bytesAvailable() > 0) {
-                byte[] buffer = new byte[sp.bytesAvailable()];
-                int numRead = inputStream.read(buffer);
-                response.append(new String(buffer, 0, numRead));
+            StringBuilder response = new StringBuilder();
+            long startTime = System.currentTimeMillis();
+            int timeout = 10000;
+            while (System.currentTimeMillis() - startTime < timeout) {
+                if (sp.bytesAvailable() > 0) {
+                    byte[] buffer = new byte[sp.bytesAvailable()];
+                    int numRead = inputStream.read(buffer);
+                    response.append(new String(buffer, 0, numRead));
 
-                // Если в ответе есть символ новой строки, считаем, что строка завершена
-                if (response.toString().contains("\n")) {
-                    break;
+                    // Если в ответе есть символ новой строки, считаем, что строка завершена
+                    if (response.toString().contains("\n")) {
+                        break;
+                    }
                 }
+                Thread.sleep(10); // Небольшая задержка, чтобы не нагружать процессор
             }
-            Thread.sleep(10); // Небольшая задержка, чтобы не нагружать процессор
-        }
-if (System.currentTimeMillis() - startTime<timeout) {
-    System.out.println("Response from Arduino: " + response.toString().trim());
-}else {
-    System.out.println("превышен интервал ожидания ответа");
-    new MyException("превышен интервал ожидания ответа");
+            if (System.currentTimeMillis() - startTime < timeout) {
+                System.out.println("Response from Arduino:\"" + response.toString().trim()+"\"");
+            } else {
+                System.out.println("превышен интервал ожидания ответа");
+                new MyException("превышен интервал ожидания ответа");
 
-}
+            }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
