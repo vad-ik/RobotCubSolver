@@ -86,6 +86,7 @@ public class RubiksCubeDetection {
     }
     public void updateSetting(){
         setting= SaveSettings.loadFromFile("setting");
+        updateSrcMat(setting.getPoint(),srcMat,srcMat2);
     }
     public static void updateSrcMat(float[] point,Mat srcMat,Mat srcMat2){
         FloatIndexer srcIndexer = srcMat.createIndexer();
@@ -233,8 +234,8 @@ public class RubiksCubeDetection {
                 // Вырезаем квадрат
                 int border = 10;
                 Mat square = new Mat(face, new Rect(x1 + border, y1 + border, x2 - x1 - border, y2 - y1 - border));
-//                String myColor=detectColor(square, debug);
-                String myColor=detectColorHSV(square, debug);
+                String myColor=detectColor(square, debug);
+//                String myColor=detectColorHSV(square, debug);
 
                 if (iMin == 0) {
                     cub.sides[Cub.SideNumber.right.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
@@ -300,7 +301,7 @@ return closestColorName;
         }
 // Проверка на белый цвет
         if (saturation < 30 && value > 200) {
-            return "Белый";
+            return "white";
         }
         // Сравниваем только Hue (оттенок)
         String closestColorName = findClosestColorNameByHue(hue);

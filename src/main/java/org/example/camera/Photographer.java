@@ -23,7 +23,6 @@ public class Photographer {
             new MyException("Камера не подключена");
         }else {
             webcam = Webcam.getWebcams().get(cam);
-            webcam = Webcam.getDefault();
             if (webcam != null) {
                 System.out.println("Камера найдена: " + webcam.getName());
 

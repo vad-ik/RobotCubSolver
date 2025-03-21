@@ -17,7 +17,7 @@ public class Main {
 
     public static ColorScanner scanner;
     public static Radio radio;
-
+    public static String wayBack;
 
     public static Cub cub;
 
@@ -42,10 +42,30 @@ public class Main {
         ans = (ans.split("\\["))[1].split("]")[0];
 
         String path = rotateAI(ans);
+        printPath(path);
+
         radio.writeString(cub.solver.toString());
 
     }
+static void printPath(String path){
+    wayBack=(new StringBuilder(path).reverse().toString())
+            .replaceAll("r","rrr").replaceAll("l","lll")
+            .replaceAll("u","uuu").replaceAll("d","ddd")
+            .replaceAll("f","fff").replaceAll("b","bbb")
 
+            .replaceAll("rrrr","").replaceAll("llll","")
+            .replaceAll("uuuu","").replaceAll("dddd","")
+            .replaceAll("ffff","").replaceAll("bbbb","");
+
+        path=path.replaceAll("rrr","r`").replaceAll("lll","l`")
+                .replaceAll("uuu","u`").replaceAll("ddd","d`")
+                .replaceAll("fff","f`").replaceAll("bbb","b`");
+    System.out.println("путь для решения "+path);
+    System.out.println("обратный путь "+
+            wayBack.replaceAll("rrr","r`").replaceAll("lll","l`")
+            .replaceAll("uuu","u`").replaceAll("ddd","d`")
+            .replaceAll("fff","f`").replaceAll("bbb","b`"));
+}
     static String rotateAI(String str) {
         cub.solver = new StringBuilder();
         String[] step = str.split(", ");
