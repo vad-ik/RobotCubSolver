@@ -8,6 +8,8 @@ import org.example.solver.Side;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -16,36 +18,38 @@ public class MyUI extends JFrame {
     Scanner scanner = new Scanner(System.in);
     ImageIcon backgroundImage;
 
+
     public MyUI() {
         setTitle("кубикорубикоинатор");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 500); // размеры окна
+        setSize(600, 600); // размеры окна
+
+
+
         setLocationRelativeTo(null); // окно - в центре экрана
         backgroundImage = new ImageIcon("src/main/resources/background.jpg");
         JLabel backgroundLabel = new JLabel(backgroundImage);
 
-        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
+
 
 
         // Добавление панелей на JFrame
 
         construct();
-       // getLayeredPane().add(backgroundLabel, Integer.valueOf(JLayeredPane.DEFAULT_LAYER - 1));
 
-
-        // Добавление фона на JFrame
         setVisible(true); // Делаем окно видимым
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
-        //todo сделать отрисовку снизу
-    }
 
     void construct() {
-        JPanel generalPanel = new JPanel();
+        JPanel generalPanel = new JPanel() {
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(backgroundImage.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         generalPanel.setOpaque(false);
         generalPanel.setLayout(new BoxLayout(generalPanel, BoxLayout.PAGE_AXIS));
 
@@ -59,8 +63,14 @@ public class MyUI extends JFrame {
         generalPanel.add(setting());
 
         err = new JPanel();
+        err.setOpaque(false);
         generalPanel.add(err);
-        add(generalPanel, BorderLayout.CENTER);
+
+
+        add(generalPanel,  BorderLayout.CENTER);
+
+
+
     }
 
     JPanel setting() {
