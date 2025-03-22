@@ -17,7 +17,7 @@ public class MyUI extends JFrame {
     ImageIcon backgroundImage;
 
     public MyUI() {
-        setTitle("CubSolvers");
+        setTitle("кубикорубикоинатор");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 500); // размеры окна
         setLocationRelativeTo(null); // окно - в центре экрана
