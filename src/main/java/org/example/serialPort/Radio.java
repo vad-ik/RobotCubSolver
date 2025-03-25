@@ -15,6 +15,7 @@ import java.util.Arrays;
 public class Radio {
 
     SerialPort sp = null;
+    RadioReadThread readThread = new RadioReadThread();
 
     public Radio() {
 
@@ -44,16 +45,16 @@ public class Radio {
             new ComPortSelectionUI();
         }
 
-
+        readThread.start();
     }
 
     public void writeString(String string) {
         try {
 
-                sp.getOutputStream().write((string).getBytes());
+            sp.getOutputStream().write((string).getBytes());
 
-                sp.getOutputStream().flush();
-                read();
+            sp.getOutputStream().flush();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -80,7 +81,7 @@ public class Radio {
                 Thread.sleep(10); // Небольшая задержка, чтобы не нагружать процессор
             }
             if (System.currentTimeMillis() - startTime < timeout) {
-                System.out.println("Response from Arduino:\"" + response.toString().trim()+"\"");
+                System.out.println("Response from Arduino:\"" + response.toString().trim() + "\"");
             } else {
                 System.out.println("превышен интервал ожидания ответа");
                 new MyException("превышен интервал ожидания ответа");
@@ -91,5 +92,10 @@ public class Radio {
         }
     }
 
-
+    class RadioReadThread extends Thread {
+        @Override
+        public void run() {
+            read();
+        }
+    }
 }
