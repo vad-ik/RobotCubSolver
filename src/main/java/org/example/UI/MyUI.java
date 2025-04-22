@@ -99,6 +99,16 @@ public class MyUI extends JFrame {
         });
         settingPanel.add(colorTest);
 
+        JButton dataSetTest = new JButton("создать датасет(debug)");
+        dataSetTest.addActionListener(_ -> {
+
+            Main.scanner.detector.updateSetting();
+            Main.scanner.detector.startCam();
+            Main.scanner.detector.getNextPhoto();
+            Main.dataset.addToDataset(Main.scanner.detector.image);
+        });
+        settingPanel.add(dataSetTest);
+
         JButton setCub = new JButton("задать кубик с консоли");
         setCub.addActionListener(_ -> {
 

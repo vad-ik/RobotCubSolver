@@ -2,46 +2,45 @@ package org.example.camera;
 
 import org.bytedeco.javacpp.indexer.FloatIndexer;
 import org.bytedeco.opencv.global.opencv_core;
-import org.bytedeco.opencv.opencv_core.*;
-import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.global.opencv_highgui;
-
+import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.opencv_core.Point;
+import org.bytedeco.opencv.opencv_core.*;
 import org.example.UI.MyException;
 import org.example.solver.Cub;
 import org.example.solver.Side;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.Scanner;
 
 import static org.bytedeco.opencv.global.opencv_core.mean;
 
 public class RubiksCubeDetection {
-   public static Photographer photo;
+    public static Photographer photo;
 
 
-
-    Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
-    Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
+   public static Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
+   public static Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
     public static Mat dstMat = new Mat(4, 1, opencv_core.CV_32FC2);
 
-    Mat image;
-    public SaveSettings setting=new SaveSettings();
-    public void startCam(){
-        if (photo !=null) {
+    public Mat image;
+    public SaveSettings setting = new SaveSettings();
+
+    public void startCam() {
+        if (photo != null) {
             photo.end();
         }
         photo = new Photographer(setting.getCamPort());
     }
-    RubiksCubeDetection(boolean debug)  {
+
+    RubiksCubeDetection(boolean debug) {
 
         if (debug) {
 
             setting.setCamPort(0);
-            if (photo !=null) {
+            if (photo != null) {
                 photo.end();
             }
             photo = new Photographer(setting.getCamPort());
@@ -60,7 +59,7 @@ public class RubiksCubeDetection {
                     scanner.nextFloat(), scanner.nextFloat()//левый нижний10
             });
             try {
-                SaveSettings.saveToFile(setting,"setting");
+                SaveSettings.saveToFile(setting, "setting");
             } catch (IOException e) {
                 new MyException("не удалось сохранить настройки");
             }
@@ -68,15 +67,13 @@ public class RubiksCubeDetection {
 
             updateSetting();
 
-            if (photo !=null) {
+            if (photo != null) {
                 photo.end();
             }
             photo = new Photographer(setting.getCamPort());
-
-
         }
 
-        updateSrcMat(setting.getPoint(),srcMat,srcMat2);
+        updateSrcMat(setting.getPoint(), srcMat, srcMat2);
 
         FloatIndexer dstIndexer = dstMat.createIndexer();
         dstIndexer.put(0, 0, 0.0f, 0.0f);     // Точка 1 (x, y)
@@ -84,11 +81,13 @@ public class RubiksCubeDetection {
         dstIndexer.put(2, 0, 200.0f, 200.0f); // Точка 3 (x, y)
         dstIndexer.put(3, 0, 0.0f, 200.0f);   // Точка 4 (x, y)
     }
-    public void updateSetting(){
-        setting= SaveSettings.loadFromFile("setting");
-        updateSrcMat(setting.getPoint(),srcMat,srcMat2);
+
+    public void updateSetting() {
+        setting = SaveSettings.loadFromFile("setting");
+        updateSrcMat(setting.getPoint(), srcMat, srcMat2);
     }
-    public static void updateSrcMat(float[] point,Mat srcMat,Mat srcMat2){
+
+    public static void updateSrcMat(float[] point, Mat srcMat, Mat srcMat2) {
         FloatIndexer srcIndexer = srcMat.createIndexer();
         srcIndexer.put(0, 0, point[0], point[1]); // Точка 1 (x, y)
         srcIndexer.put(1, 0, point[2], point[3]); // Точка 2 (x, y)
@@ -102,7 +101,8 @@ public class RubiksCubeDetection {
         srcIndexer2.put(2, 0, point[10], point[11]); // Точка 3 (x, y)
         srcIndexer2.put(3, 0, point[8], point[9]);  // Точка 4 (x, y)
     }
-    public void getNextPhoto(){
+
+    public void getNextPhoto() {
         image = photo.getNext();
     }
 
@@ -111,43 +111,42 @@ public class RubiksCubeDetection {
             image = photo.getNext();
         }
         // Заполняем dstMat с помощью FloatIndexer
-        getEdge(srcMat,  image, 1, 3, cub, debug,1);
+        getEdge(srcMat, image, 1, 3, cub, debug, 1);
         // Заполняем dstMat с помощью FloatIndexer
-        getEdge(srcMat2,  image, 0, 2, cub, debug,2);
+        getEdge(srcMat2, image, 0, 2, cub, debug, 2);
         if (debug) {
             drawPoint();
             opencv_highgui.waitKey(0);
             opencv_highgui.destroyAllWindows();
         }
     }
-    public static Mat getTransform(Mat image, Mat srcMat, Mat dstMat){
-        Mat transformMatrix = opencv_imgproc.getPerspectiveTransform(srcMat, dstMat);
 
+    public static Mat getTransform(Mat image, Mat srcMat, Mat dstMat) {
+        Mat transformMatrix = opencv_imgproc.getPerspectiveTransform(srcMat, dstMat);
         // Применяем перспективное преобразование
         Mat warped = new Mat();
         opencv_imgproc.warpPerspective(image, warped, transformMatrix, new Size(200, 200));
         return warped;
     }
-    void getEdge(Mat srcMat, Mat image, int iMin, int iMax, Cub cub, boolean debug,int num) {
 
-
+    void getEdge(Mat srcMat, Mat image, int iMin, int iMax, Cub cub, boolean debug, int num) {
         // Вычисляем матрицу перспективного преобразования
-        Mat warped =getTransform(image,srcMat,dstMat);
+        Mat warped = getTransform(image, srcMat, dstMat);
         // Разделяем грань на 9 квадратов и распознаем цвета
-        recognizeColors(warped, iMin, iMax, cub, debug,num);
+        recognizeColors(warped, iMin, iMax, cub, debug, num);
         if (debug) {
             opencv_highgui.imshow("Warped Face" + iMin, warped);
         }
-
     }
-    void drawPoint(){
+
+    void drawPoint() {
 
         drawPoints(image, srcMat);
         drawPoints(image, srcMat2);
-            // Отображение результата
-            opencv_highgui.imshow("Original Image" , image);
-
+        // Отображение результата
+        opencv_highgui.imshow("Original Image", image);
     }
+
     public void drawPoints(Mat image, Mat points) {
         // Создаем индексер для доступа к данным points
         FloatIndexer indexer = points.createIndexer();
@@ -165,8 +164,9 @@ public class RubiksCubeDetection {
             // Рисуем точку
             opencv_imgproc.circle(image, new Point((int) x, (int) y), radius, color, thickness, opencv_imgproc.LINE_AA, 0);
         }
-        drawGrid( image,  points);
+        drawGrid(image, points);
     }
+
     public void drawGrid(Mat image, Mat points) {
         // Создаем индексер для доступа к данным points
         FloatIndexer indexer = points.createIndexer();
@@ -219,8 +219,9 @@ public class RubiksCubeDetection {
             opencv_imgproc.line(image, new Point((int) leftX, (int) leftY), new Point((int) rightX, (int) rightY), gridColor, thickness, opencv_imgproc.LINE_AA, 0);
         }
     }
+
     // Функция для распознавания цветов на грани
-    private void recognizeColors(Mat face, int iMin, int iMax, Cub cub, boolean debug,int num) {
+    private void recognizeColors(Mat face, int iMin, int iMax, Cub cub, boolean debug, int num) {
         int rows = face.rows();
         int cols = face.cols();
         // Разделяем грань на 9 квадратов (3x3)
@@ -234,25 +235,30 @@ public class RubiksCubeDetection {
                 // Вырезаем квадрат
                 int border = 10;
                 Mat square = new Mat(face, new Rect(x1 + border, y1 + border, x2 - x1 - border, y2 - y1 - border));
-                String myColor=detectColor(square, debug);
+                String myColor = detectColor(square, debug);
 //                String myColor=detectColorHSV(square, debug);
 
                 if (iMin == 0) {
                     cub.sides[Cub.SideNumber.right.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
-                    if (debug) {System.out.println(i * 3 + j + 1);}
+                    if (debug) {
+                        System.out.println(i * 3 + j + 1);
+                    }
                 } else {
                     cub.sides[Cub.SideNumber.front.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
-                    if (debug) {System.out.println(i * 3 + j + 1);}
+                    if (debug) {
+                        System.out.println(i * 3 + j + 1);
+                    }
                 }
                 if (debug) {
-                    System.out.println("color:"+num+" " +i+" "+j);
-                    opencv_highgui.imshow("block Image"+num+" " +i+" "+j+myColor, square);
-                    opencv_highgui.resizeWindow("block Image"+num+" " +i+" "+j+myColor, 300, 100);
+                    System.out.println("color:" + num + " " + i + " " + j);
+                    opencv_highgui.imshow("block Image" + num + " " + i + " " + j + myColor, square);
+                    opencv_highgui.resizeWindow("block Image" + num + " " + i + " " + j + myColor, 300, 100);
                     System.out.println(myColor);
                 }
             }
         }
     }
+
     public String detectColor(Mat mat, boolean debug) {
         // Вычисляем среднее значение по каждому каналу (BGR)
         Scalar meanColor = mean(mat);
@@ -260,18 +266,16 @@ public class RubiksCubeDetection {
         int green = (int) meanColor.get(1);
         int red = (int) meanColor.get(2);
 
-        Color targetColor=new Color( red,  green,  blue);
+        Color targetColor = new Color(red, green, blue);
         if (!debug) {
-            System.out.println("rgb("+red + ", " + green + ", " + blue+")");
+            System.out.println("rgb(" + red + ", " + green + ", " + blue + ")");
         }
 
-        String closestColorName = findClosestColorName(targetColor);
+//        String closestColorName = findClosestColorName(targetColor);
+        String closestColorName=getColorForBox(targetColor.getRed(),targetColor.getGreen(),targetColor.getBlue());
         System.out.println("Ближайший цвет: " + closestColorName);
-return closestColorName;
+        return closestColorName;
     }
-
-
-
 
 
     public static double distance(Color from, Color to) {
@@ -281,43 +285,27 @@ return closestColorName;
                         + Math.pow(from.getBlue() - to.getBlue(), 2)
         );
     }
-
-    // Функция для поиска названия ближайшего цвета
-
-
-    public String detectColorHSV(Mat mat, boolean debug) {
-        // Преобразуем изображение в HSV
-        Mat hsvImage = new Mat();
-        opencv_imgproc.cvtColor(mat, hsvImage, opencv_imgproc.COLOR_BGR2HSV);
-
-        // Вычисляем среднее значение по каждому каналу (HSV)
-        Scalar meanColor = mean(hsvImage);
-        int hue = (int) meanColor.get(0);
-        int saturation = (int) meanColor.get(1);
-        int value = (int) meanColor.get(2);
-
-        if (!debug) {
-            System.out.println("hsv(" + hue + ", " + saturation + ", " + value + ")");
+    public static String getColorForBox(int r,int g,int b ){
+        if (r >= 100 && g < 100 && b < 100) {
+            return "red"; // Красный
+        } else if (r < 100 && g >= 100 && b < 100) {
+            return "green"; // Зелёный
+        } else if (r < 100 && g < 100 && b >= 50) {
+            return "blue"; // Синий
+        } else if (r >= 150 && g >= 170 && b < 100) {
+            return "yellow"; // Жёлтый
+        } else if (r >= 150 && g >= 80 && g <= 200 && b < 100) {
+            return "orange"; // Оранжевый
+        } else if (r > 150 && g > 150 && b > 150) {
+            return "white"; // Белый
+        } else {
+            return "Non"; // Если цвет не распознан, используется предыдущее значение
         }
-// Проверка на белый цвет
-        if (saturation < 30 && value > 200) {
-            return "white";
-        }
-        // Сравниваем только Hue (оттенок)
-        String closestColorName = findClosestColorNameByHue(hue);
-        System.out.println("Ближайший цвет: " + closestColorName);
-        return closestColorName;
     }
 
-    public static String findClosestColorNameByHue(int targetHue) {
-        SaveSettings setting = SaveSettings.loadFromFile("setting");
-        return setting.getColorMap().entrySet().stream()
-                .min(Comparator.comparingDouble(entry -> Math.abs(targetHue - getHue(entry.getValue()))))
-                        .map(Map.Entry::getKey)
-                        .orElse("Неизвестный цвет");
-    }
+
     public static String findClosestColorName(Color targetColor) {
-        SaveSettings setting= SaveSettings.loadFromFile("setting");
+        SaveSettings setting = SaveSettings.loadFromFile("setting");
         return setting.getColorMap().entrySet().stream()
                 .min((entry1, entry2) -> Double.compare(
                         distance(targetColor, entry1.getValue()),
@@ -326,22 +314,14 @@ return closestColorName;
                 .map(Map.Entry::getKey) // Извлекаем название цвета
                 .orElse("Неизвестный цвет"); // Если список пуст
     }
-    public static int getHue(Color color) {
-        float[] hsv = new float[3];
-        Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsv);
-        return (int) (hsv[0] * 180); // Преобразуем Hue в диапазон 0-180
-    }
-
+   
     public static void main(String[] args) {
-        Color ye=Color.YELLOW;
-        Color o=Color.ORANGE;
-        System.out.println(o.getRed()+" "+o.getGreen()+" "+o.getBlue());
-        System.out.println(ye.getRed()+" "+ye.getGreen()+" "+ye.getBlue());
-        Color m=new Color(73,124,94);
-        System.out.println(distance(m,o));
-        System.out.println(distance(m,ye));
-
+        Color ye = Color.YELLOW;
+        Color o = Color.ORANGE;
+        System.out.println(o.getRed() + " " + o.getGreen() + " " + o.getBlue());
+        System.out.println(ye.getRed() + " " + ye.getGreen() + " " + ye.getBlue());
+        Color m = new Color(73, 124, 94);
+        System.out.println(distance(m, o));
+        System.out.println(distance(m, ye));
     }
-
-
 }

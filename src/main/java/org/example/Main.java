@@ -4,6 +4,7 @@ import org.example.AI.DeepCubeSolver;
 import org.example.AI.TransformToAI;
 import org.example.UI.MyUI;
 import org.example.camera.ColorScanner;
+import org.example.camera.CreateDataset;
 import org.example.serialPort.Radio;
 import org.example.solver.Cub;
 import org.example.solver.Side;
@@ -18,10 +19,11 @@ public class Main {
     public static ColorScanner scanner;
     public static Radio radio;
     public static String wayBack;
-
+public static CreateDataset dataset;
     public static Cub cub;
 
     public static void main(String[] args) {
+        dataset=new CreateDataset();
 
         scanner = new ColorScanner(false);
         radio = new Radio();
