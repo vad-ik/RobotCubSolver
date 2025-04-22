@@ -21,8 +21,8 @@ public class RubiksCubeDetection {
     public static Photographer photo;
 
 
-   public static Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
-   public static Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
+    public static Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
+    public static Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
     public static Mat dstMat = new Mat(4, 1, opencv_core.CV_32FC2);
 
     public Mat image;
@@ -272,7 +272,9 @@ public class RubiksCubeDetection {
         }
 
 //        String closestColorName = findClosestColorName(targetColor);
-        String closestColorName=getColorForBox(targetColor.getRed(),targetColor.getGreen(),targetColor.getBlue());
+//        String closestColorName = getColorForBox(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue());
+        String closestColorName = getColorForRatio(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue());
+
         System.out.println("Ближайший цвет: " + closestColorName);
         return closestColorName;
     }
@@ -285,7 +287,8 @@ public class RubiksCubeDetection {
                         + Math.pow(from.getBlue() - to.getBlue(), 2)
         );
     }
-    public static String getColorForBox(int r,int g,int b ){
+
+    public static String getColorForBox(int r, int g, int b) {
         if (r >= 100 && g < 100 && b < 100) {
             return "red"; // Красный
         } else if (r < 100 && g >= 100 && b < 100) {
@@ -299,8 +302,33 @@ public class RubiksCubeDetection {
         } else if (r > 150 && g > 150 && b > 150) {
             return "white"; // Белый
         } else {
-            return "Non"; // Если цвет не распознан, используется предыдущее значение
+            return "Non";
         }
+    }
+
+    public static String getColorForRatio(double r, double g, double b) {
+r++;
+g++;
+b++;
+        if ( r / g > 1.2 && r/b > 1.2 ){
+            return  "red";
+        }
+        if (g / r > 1.2 && r/b > 1.2 ){
+            return "green";
+        }
+        if (b / r > 1.2 && b/g > 1.2 ){
+            return "blue";
+        }
+        if( 0.9 < r / b && r / b < 1.1 && 0.9 < b / g &&  b / g < 1.1 && 0.9 < g / r && g / r < 1.1 ){
+            return "white";
+        }
+//        if( r / b > 1.2 && g/b > 1.2 && r/g> 1.5){
+//            return"orange";
+//        }
+        if( r / b > 1.2 && g/b > 1.2 ){
+            return"yellow";
+        }
+        return "Non";
     }
 
 
@@ -314,7 +342,7 @@ public class RubiksCubeDetection {
                 .map(Map.Entry::getKey) // Извлекаем название цвета
                 .orElse("Неизвестный цвет"); // Если список пуст
     }
-   
+
     public static void main(String[] args) {
         Color ye = Color.YELLOW;
         Color o = Color.ORANGE;
