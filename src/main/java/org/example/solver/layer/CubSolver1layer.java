@@ -12,8 +12,8 @@ public class CubSolver1layer {
         pasteWhite(cub);
         solveCross(cub);
         solveAngles(cub);
-
     }
+
     boolean check1leer(Cub cub) {
         boolean ans = true;
         for (int i = 1; i < 5; i++) {
@@ -29,15 +29,15 @@ public class CubSolver1layer {
             return false;
         }
     }
+
     void solveAngles(Cub cub) {
 
         while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[1] == Side.Color.white.ordinal()) &&
                 (cub.sides[Cub.SideNumber.down.ordinal()].cell[3] == Side.Color.white.ordinal()) &&
                 (cub.sides[Cub.SideNumber.down.ordinal()].cell[7] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[9] == Side.Color.white.ordinal())&&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[9] == Side.Color.white.ordinal()) &&
                 check1leer(cub)
-        ))
-        {
+        )) {
 
             for (int i = 0; i < 4; i++) {
                 if ((cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(i, 9)] == Side.Color.white.ordinal()) ||
@@ -63,34 +63,28 @@ public class CubSolver1layer {
 
                     int k = 0;
                     while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[rotatePifPaf(i + j, 3)] == Side.Color.white.ordinal()) &&
-                            (cub.sides[handPosition(i + j, 2)].cell[5]==cub.sides[handPosition(i + j, 2)].cell[9])&&
-                            (cub.sides[handPosition(i + j, 3)].cell[5]==cub.sides[handPosition(i + j, 3)].cell[7]))&&
+                            (cub.sides[handPosition(i + j, 2)].cell[5] == cub.sides[handPosition(i + j, 2)].cell[9]) &&
+                            (cub.sides[handPosition(i + j, 3)].cell[5] == cub.sides[handPosition(i + j, 3)].cell[7])) &&
 
                             k < 90) {
                         pifPaf((i + j) % 4, cub);
                         k++;
-
                     }
 
                     break;
-
                 }
             }
 
             for (int i = 0; i < 4; i++) {
                 if ((cub.sides[handPosition(i, 2)].cell[9] == Side.Color.white.ordinal()) ||
-                        (cub.sides[handPosition(i, 3)].cell[7] == Side.Color.white.ordinal())||
-                        (cub.sides[Cub.SideNumber.down.ordinal()].cell[handCell(i, 3)] == Side.Color.white.ordinal()&&
-                                ( cub.sides[handPosition(i, 2)].cell[9] !=cub.sides[handPosition(i, 2)].cell[8] ||
-                                cub.sides[handPosition(i, 3)].cell[7] !=cub.sides[handPosition(i, 3)].cell[8] )))
-                {
+                        (cub.sides[handPosition(i, 3)].cell[7] == Side.Color.white.ordinal()) ||
+                        (cub.sides[Cub.SideNumber.down.ordinal()].cell[handCell(i, 3)] == Side.Color.white.ordinal() &&
+                                (cub.sides[handPosition(i, 2)].cell[9] != cub.sides[handPosition(i, 2)].cell[8] ||
+                                        cub.sides[handPosition(i, 3)].cell[7] != cub.sides[handPosition(i, 3)].cell[8]))) {
                     pifPaf((i), cub);
-
                 }
             }
-
         }
-
     }
 
     void solveCross(Cub cub) {
@@ -106,7 +100,6 @@ public class CubSolver1layer {
                         i < 5) {
                     cub.u();
                     i++;
-
                 }
                 if (i != 5 && cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == Side.Color.white.ordinal()) {
                     handRotation(cub, rot, 9);
@@ -160,10 +153,8 @@ public class CubSolver1layer {
                     }
 
                     handRotation(cub, i / 2, 14);
-
                 }
             }
-
         }
     }
 
@@ -217,7 +208,6 @@ public class CubSolver1layer {
                 case 3:
                     cell = 1;
                     break;
-
             }
         }
         return cell;
@@ -303,9 +293,7 @@ public class CubSolver1layer {
                 cub.d();
                 cub.d();
                 break;
-
         }
-
     }
 
 

@@ -1,21 +1,15 @@
 package org.example.camera;
 
-import org.bytedeco.opencv.global.opencv_highgui;
 import org.bytedeco.opencv.global.opencv_imgcodecs;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.bytedeco.opencv.opencv_core.Rect;
-import org.example.solver.Cub;
-import org.example.solver.Side;
 
-import java.util.Scanner;
 import java.util.UUID;
 
 public class CreateDataset {
     String outputPath = "";
     public CreateDataset() {
-        Scanner scanner =new Scanner(System.in);
-        System.out.println("введите путь сохранения датасета");
-        this.outputPath = scanner.nextLine();
+        this.outputPath = "C:\\rubiks\\dataset";
     }
 
 public  void addToDataset(Mat image){

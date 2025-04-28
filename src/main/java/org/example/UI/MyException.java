@@ -11,7 +11,7 @@ public class MyException {
         frame.setSize(300, 100); // размеры окна
 
         JPanel panel = new JPanel();
-        JTextField text=new JTextField(string);
+        JTextField text = new JTextField(string);
 
         // Делаем текстовое поле нередактируемым
         text.setEditable(false);

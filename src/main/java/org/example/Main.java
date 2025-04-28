@@ -10,7 +10,6 @@ import org.example.solver.Cub;
 import org.example.solver.Side;
 import org.example.solver.Solver;
 
-
 import java.util.Random;
 
 public class Main {
@@ -19,11 +18,11 @@ public class Main {
     public static ColorScanner scanner;
     public static Radio radio;
     public static String wayBack;
-public static CreateDataset dataset;
+    public static CreateDataset dataset;
     public static Cub cub;
 
     public static void main(String[] args) {
-        dataset=new CreateDataset();
+        dataset = new CreateDataset();
 
         scanner = new ColorScanner(false);
         radio = new Radio();
@@ -35,7 +34,7 @@ public static CreateDataset dataset;
 //        solveAI();
     }
 
-    public static void solveAI()  {
+    public static void solveAI() {
 
         TransformToAI transformer = new TransformToAI();
         String state = transformer.transform(cub);
@@ -47,27 +46,28 @@ public static CreateDataset dataset;
         printPath(path);
 
         radio.writeString(cub.solver.toString());
-
     }
-static void printPath(String path){
-    wayBack=(new StringBuilder(path).reverse().toString())
-            .replaceAll("r","rrr").replaceAll("l","lll")
-            .replaceAll("u","uuu").replaceAll("d","ddd")
-            .replaceAll("f","fff").replaceAll("b","bbb")
 
-            .replaceAll("rrrr","").replaceAll("llll","")
-            .replaceAll("uuuu","").replaceAll("dddd","")
-            .replaceAll("ffff","").replaceAll("bbbb","");
+    static void printPath(String path) {
+        wayBack = (new StringBuilder(path).reverse().toString())
+                .replaceAll("r", "rrr").replaceAll("l", "lll")
+                .replaceAll("u", "uuu").replaceAll("d", "ddd")
+                .replaceAll("f", "fff").replaceAll("b", "bbb")
 
-        path=path.replaceAll("rrr","r`").replaceAll("lll","l`")
-                .replaceAll("uuu","u`").replaceAll("ddd","d`")
-                .replaceAll("fff","f`").replaceAll("bbb","b`");
-    System.out.println("путь для решения "+path);
-    System.out.println("обратный путь "+
-            wayBack.replaceAll("rrr","r`").replaceAll("lll","l`")
-            .replaceAll("uuu","u`").replaceAll("ddd","d`")
-            .replaceAll("fff","f`").replaceAll("bbb","b`"));
-}
+                .replaceAll("rrrr", "").replaceAll("llll", "")
+                .replaceAll("uuuu", "").replaceAll("dddd", "")
+                .replaceAll("ffff", "").replaceAll("bbbb", "");
+
+        path = path.replaceAll("rrr", "r`").replaceAll("lll", "l`")
+                .replaceAll("uuu", "u`").replaceAll("ddd", "d`")
+                .replaceAll("fff", "f`").replaceAll("bbb", "b`");
+        System.out.println("путь для решения " + path);
+        System.out.println("обратный путь " +
+                wayBack.replaceAll("rrr", "r`").replaceAll("lll", "l`")
+                        .replaceAll("uuu", "u`").replaceAll("ddd", "d`")
+                        .replaceAll("fff", "f`").replaceAll("bbb", "b`"));
+    }
+
     static String rotateAI(String str) {
         cub.solver = new StringBuilder();
         String[] step = str.split(", ");
@@ -86,7 +86,6 @@ static void printPath(String path){
 
                     for (int j = 0; j < num; j++) {
                         cub.u();
-
                     }
                     break;
                 case "\"F":
@@ -114,13 +113,12 @@ static void printPath(String path){
                         cub.b();
                     }
                     break;
-
             }
         }
         return cub.solver.toString();
     }
 
-    public static void solveCub()  {
+    public static void solveCub() {
         Solver solver = new Solver();
 //        Cub cub = new Cub();
 //
@@ -130,7 +128,6 @@ static void printPath(String path){
 
 
         radio.writeString(cub.solver.toString());
-
     }
 
     static void chesk(Cub cub) {
@@ -144,7 +141,6 @@ static void printPath(String path){
         for (int i = 1; i < 10; i++) {
             if (side.cell[i] != col) {
                 System.out.println("Allarm");
-
             }
         }
     }
@@ -175,9 +171,7 @@ static void printPath(String path){
                     cub.b();
                     break;
             }
-
         }
         cub.solver = new StringBuilder();
     }
-
 }

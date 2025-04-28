@@ -1,16 +1,12 @@
 package org.example.UI;
 
 import org.example.Main;
-import org.example.camera.ColorScanner;
 import org.example.solver.Cub;
 import org.example.solver.Side;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class MyUI extends JFrame {
@@ -25,12 +21,9 @@ public class MyUI extends JFrame {
         setSize(600, 600); // размеры окна
 
 
-
         setLocationRelativeTo(null); // окно - в центре экрана
         backgroundImage = new ImageIcon("src/main/resources/background.jpg");
         JLabel backgroundLabel = new JLabel(backgroundImage);
-
-
 
 
         // Добавление панелей на JFrame
@@ -67,10 +60,7 @@ public class MyUI extends JFrame {
         generalPanel.add(err);
 
 
-        add(generalPanel,  BorderLayout.CENTER);
-
-
-
+        add(generalPanel, BorderLayout.CENTER);
     }
 
     JPanel setting() {
@@ -113,14 +103,12 @@ public class MyUI extends JFrame {
         setCub.addActionListener(_ -> {
 
             setCubConsole();
-
         });
         settingPanel.add(setCub);
 
         JButton getCub = new JButton("вывести кубик в консоль");
         getCub.addActionListener(_ -> {
             System.out.println(Main.cub.toString2());
-
         });
         settingPanel.add(getCub);
 
@@ -150,6 +138,9 @@ public class MyUI extends JFrame {
 
             System.out.println("введите грань: " + Cub.SideNumber.values()[j]);
             input = scanner.nextLine();
+            while (input.length() < 9) {
+                input = scanner.nextLine();
+            }
             for (int i = 1; i < 10; i++) {
                 int colorCel = -1;
                 switch (input.charAt(i - 1)) {
@@ -166,12 +157,6 @@ public class MyUI extends JFrame {
         System.out.println("кубик успешно записан");
     }
 
-    //wwbgwrywo
-//gyoyoorwg
-//bowbgryww
-//bgwyrorob
-//rboybbyrg
-//orggygybr
     void addControlButtons(JPanel mainPAnel) {
         JPanel panel = new JPanel();
         addBut(panel, "l");
@@ -191,21 +176,27 @@ public class MyUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 Main.scanner.scan(Main.cub);
-
             }
         });
         frame.add(scanBut);
-        JButton startBut = new JButton("собрать кубик"); // Экземпляр класса JButton
-        startBut.addActionListener(new AbstractAction() {
+        JButton startButAI = new JButton("собрать кубик с помощью AI"); // Экземпляр класса JButton
+        startButAI.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 Main.solveAI();
+            }
+        });
+        frame.add(startButAI);
 
+        JButton startBut = new JButton("собрать кубик по слоям"); // Экземпляр класса JButton
+        startBut.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Main.solveCub();
             }
         });
         frame.add(startBut);
-
     }
 
     void addBut(JPanel frame, String name) {
@@ -214,14 +205,9 @@ public class MyUI extends JFrame {
         newBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 Main.radio.writeString(name);
-
             }
         });
-
         frame.add(newBut); // Добавляем кнопку на Frame
     }
-
-
 }

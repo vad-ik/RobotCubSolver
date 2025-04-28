@@ -3,6 +3,7 @@ package org.example.camera;
 import org.bytedeco.javacpp.indexer.FloatIndexer;
 import org.bytedeco.opencv.global.opencv_core;
 import org.bytedeco.opencv.global.opencv_highgui;
+import org.bytedeco.opencv.global.opencv_imgcodecs;
 import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.opencv_core.Point;
 import org.bytedeco.opencv.opencv_core.*;
@@ -12,8 +13,9 @@ import org.example.solver.Side;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.UUID;
 
 import static org.bytedeco.opencv.global.opencv_core.mean;
 
@@ -33,6 +35,10 @@ public class RubiksCubeDetection {
             photo.end();
         }
         photo = new Photographer(setting.getCamPort());
+    }
+    public void save(){
+String path="C:\\rubiks\\debug\\";
+        opencv_imgcodecs.imwrite(path+UUID.randomUUID().toString().substring(0, 8)+".png", image);
     }
 
     RubiksCubeDetection(boolean debug) {
@@ -164,61 +170,8 @@ public class RubiksCubeDetection {
             // Рисуем точку
             opencv_imgproc.circle(image, new Point((int) x, (int) y), radius, color, thickness, opencv_imgproc.LINE_AA, 0);
         }
-        drawGrid(image, points);
     }
 
-    public void drawGrid(Mat image, Mat points) {
-        // Создаем индексер для доступа к данным points
-        FloatIndexer indexer = points.createIndexer();
-
-        // Получаем координаты углов четырехугольника
-        float x1 = indexer.get(0, 0, 0); // Левый верхний
-        float y1 = indexer.get(0, 0, 1);
-        float x2 = indexer.get(1, 0, 0); // Правый верхний
-        float y2 = indexer.get(1, 0, 1);
-        float x3 = indexer.get(3, 0, 0); // Левый нижний
-        float y3 = indexer.get(3, 0, 1);
-        float x4 = indexer.get(2, 0, 0); // Правый нижний
-        float y4 = indexer.get(2, 0, 1);
-
-        // Цвет линий сетки (BGR формат)
-        Scalar gridColor = new Scalar(0, 255, 0, 0); // Зеленый цвет
-
-        // Толщина линии
-        int thickness = 2;
-
-        // Рисуем вертикальные линии
-        for (int i = 1; i < 3; i++) {
-            float t = i / 3.0f; // Параметр интерполяции (0.33, 0.66)
-
-            // Верхняя точка вертикальной линии
-            float topX = x1 + t * (x2 - x1);
-            float topY = y1 + t * (y2 - y1);
-
-            // Нижняя точка вертикальной линии
-            float bottomX = x3 + t * (x4 - x3);
-            float bottomY = y3 + t * (y4 - y3);
-
-            // Рисуем линию
-            opencv_imgproc.line(image, new Point((int) topX, (int) topY), new Point((int) bottomX, (int) bottomY), gridColor, thickness, opencv_imgproc.LINE_AA, 0);
-        }
-
-        // Рисуем горизонтальные линии
-        for (int i = 1; i < 3; i++) {
-            float t = i / 3.0f; // Параметр интерполяции (0.33, 0.66)
-
-            // Левая точка горизонтальной линии
-            float leftX = x1 + t * (x3 - x1);
-            float leftY = y1 + t * (y3 - y1);
-
-            // Правая точка горизонтальной линии
-            float rightX = x2 + t * (x4 - x2);
-            float rightY = y2 + t * (y4 - y2);
-
-            // Рисуем линию
-            opencv_imgproc.line(image, new Point((int) leftX, (int) leftY), new Point((int) rightX, (int) rightY), gridColor, thickness, opencv_imgproc.LINE_AA, 0);
-        }
-    }
 
     // Функция для распознавания цветов на грани
     private void recognizeColors(Mat face, int iMin, int iMax, Cub cub, boolean debug, int num) {
@@ -270,9 +223,6 @@ public class RubiksCubeDetection {
         if (!debug) {
             System.out.println("rgb(" + red + ", " + green + ", " + blue + ")");
         }
-
-//        String closestColorName = findClosestColorName(targetColor);
-//        String closestColorName = getColorForBox(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue());
         String closestColorName = getColorForRatio(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue());
 
         System.out.println("Ближайший цвет: " + closestColorName);
@@ -280,76 +230,39 @@ public class RubiksCubeDetection {
     }
 
 
-    public static double distance(Color from, Color to) {
-        return Math.sqrt(
-                Math.pow(from.getRed() - to.getRed(), 2)
-                        + Math.pow(from.getGreen() - to.getGreen(), 2)
-                        + Math.pow(from.getBlue() - to.getBlue(), 2)
-        );
-    }
-
-    public static String getColorForBox(int r, int g, int b) {
-        if (r >= 100 && g < 100 && b < 100) {
-            return "red"; // Красный
-        } else if (r < 100 && g >= 100 && b < 100) {
-            return "green"; // Зелёный
-        } else if (r < 100 && g < 100 && b >= 50) {
-            return "blue"; // Синий
-        } else if (r >= 150 && g >= 170 && b < 100) {
-            return "yellow"; // Жёлтый
-        } else if (r >= 150 && g >= 80 && g <= 200 && b < 100) {
-            return "orange"; // Оранжевый
-        } else if (r > 150 && g > 150 && b > 150) {
-            return "white"; // Белый
-        } else {
-            return "Non";
-        }
-    }
-
     public static String getColorForRatio(double r, double g, double b) {
-r++;
-g++;
-b++;
-        if ( r / g > 1.2 && r/b > 1.2 ){
-            return  "red";
+
+        float[] hsv = new float[3];
+        Color.RGBtoHSB((int) r, (int) g, (int) b, hsv);
+        System.out.println((Arrays.toString(hsv)));
+        r++;
+        g++;
+        b++;
+
+        System.out.println("r/b=" + (r / b));
+        System.out.println("r/g=" + (r / g));
+        System.out.println("b/g=" + (b / g));
+        System.out.println("g/r=" + (g / r));
+        System.out.println("g/b=" + (g / b));
+        if (r / g > 3 && r / b > 3) {
+            return "red";
         }
-        if (g / r > 1.2 && r/b > 1.2 ){
+        if (g / r > 1.2 && g / b > 1.2) {
             return "green";
         }
-        if (b / r > 1.2 && b/g > 1.2 ){
+        if (b / r > 1.2 && b / g > 1.2) {
             return "blue";
         }
-        if( 0.9 < r / b && r / b < 1.1 && 0.9 < b / g &&  b / g < 1.1 && 0.9 < g / r && g / r < 1.1 ){
+        if (0.8 < r / b && r / b < 1.2 && 0.8 < b / g && b / g < 1.2 && 0.8 < g / r && g / r < 1.2) {
             return "white";
         }
-//        if( r / b > 1.2 && g/b > 1.2 && r/g> 1.5){
-//            return"orange";
-//        }
-        if( r / b > 1.2 && g/b > 1.2 ){
-            return"yellow";
+        if(r / g > 1.2 && r / b > 1.2) {
+            return"orange";
+        }
+        if (r / b > 1.2 && g / b > 1.2) {
+            return "yellow";
         }
         return "Non";
     }
 
-
-    public static String findClosestColorName(Color targetColor) {
-        SaveSettings setting = SaveSettings.loadFromFile("setting");
-        return setting.getColorMap().entrySet().stream()
-                .min((entry1, entry2) -> Double.compare(
-                        distance(targetColor, entry1.getValue()),
-                        distance(targetColor, entry2.getValue())
-                ))
-                .map(Map.Entry::getKey) // Извлекаем название цвета
-                .orElse("Неизвестный цвет"); // Если список пуст
-    }
-
-    public static void main(String[] args) {
-        Color ye = Color.YELLOW;
-        Color o = Color.ORANGE;
-        System.out.println(o.getRed() + " " + o.getGreen() + " " + o.getBlue());
-        System.out.println(ye.getRed() + " " + ye.getGreen() + " " + ye.getBlue());
-        Color m = new Color(73, 124, 94);
-        System.out.println(distance(m, o));
-        System.out.println(distance(m, ye));
-    }
 }

@@ -12,6 +12,7 @@ public class DeepCubeSolver {
     public static String send(String state) {
 
         try {
+            System.out.println("данные отправляются");
             // URL сервера
             URL url = new URL("https://deepcube.igb.uci.edu/solve");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -32,8 +33,11 @@ public class DeepCubeSolver {
                 os.write(input, 0, input.length);
             }
 
+            System.out.println("данные отправлены");
             // Получение ответа
             int responseCode = connection.getResponseCode();
+
+            System.out.println("данные получены");
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
                     StringBuilder response = new StringBuilder();

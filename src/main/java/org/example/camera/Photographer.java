@@ -2,7 +2,8 @@ package org.example.camera;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
-import org.bytedeco.javacv.*;
+import org.bytedeco.javacv.Java2DFrameConverter;
+import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.example.UI.MyException;
@@ -19,49 +20,39 @@ public class Photographer {
 
     public Photographer(int cam) {
 
-        if (Webcam.getWebcams().isEmpty()){
+        if (Webcam.getWebcams().isEmpty()) {
             new MyException("Камера не подключена");
-        }else {
+        } else {
             webcam = Webcam.getWebcams().get(cam);
             if (webcam != null) {
                 System.out.println("Камера найдена: " + webcam.getName());
 
                 // Устанавливаем разрешение (например, VGA)
                 webcam.setViewSize(WebcamResolution.VGA.getSize());
-
-
-//            System.out.println(WebcamResolution.VGA.getSize());
-
                 // Открываем камеру
                 webcam.open();
 
                 // Захватываем изображение
                 if (webcam.isImageNew()) {
                     webcam.getImage();
-
-
                 }
-
-
             } else {
 
                 new MyException("Камера не подключена");
-
             }
         }
     }
 
     public static List<String> getConnectedCameras() {
-        List<String> names=new ArrayList<>();
-        List<Webcam> web= Webcam.getWebcams();
+        List<String> names = new ArrayList<>();
+        List<Webcam> web = Webcam.getWebcams();
         for (int i = 0; i < web.size(); i++) {
             names.add(web.get(i).getName());
         }
         return names;
-
     }
-    public Mat getNext() {
 
+    public Mat getNext() {
         // Захват изображения
         Mat mat = openCVConverter.convert(java2DConverter.convert(webcam.getImage()));
 
@@ -70,11 +61,7 @@ public class Photographer {
 
         return mat;
     }
-
     public void end() {
         webcam.close();
-
     }
-
-
 }

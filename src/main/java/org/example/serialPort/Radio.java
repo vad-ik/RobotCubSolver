@@ -5,11 +5,9 @@ import com.fazecast.jSerialComm.SerialPort;
 import org.example.Main;
 import org.example.UI.ComPortSelectionUI;
 import org.example.UI.MyException;
-import org.example.camera.SaveSettings;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 
 public class Radio {
@@ -40,25 +38,20 @@ public class Radio {
                 System.out.println("Failed to open port :(");
                 new MyException("Failed to open port");
             }
-
         } else {
             new ComPortSelectionUI();
         }
 
-        readThread.start();
+      //  readThread.start();
     }
 
     public void writeString(String string) {
         try {
-
             sp.getOutputStream().write((string).getBytes());
-
             sp.getOutputStream().flush();
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     void read() {
@@ -85,7 +78,6 @@ public class Radio {
             } else {
                 System.out.println("превышен интервал ожидания ответа");
                 new MyException("превышен интервал ожидания ответа");
-
             }
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

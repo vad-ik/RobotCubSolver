@@ -19,32 +19,30 @@ public class CubSolver3layer {
         while (cub.sides[Cub.SideNumber.down.ordinal()].cell[2] != cub.sides[Cub.SideNumber.down.ordinal()].cell[5]) {
             cub.d();
         }
-
     }
 
     void solveAngles(Cub cub) {
-int i = 0;
+        int i = 0;
         while (!check3leer(cub)) {
             i++;
             if (i > 100) {
                 System.out.println("ERROR");
                 System.out.println(cub);
-                int b=0;
-                b=6/b;
+                int b = 0;
+                b = 6 / b;
             }
             boolean finish = false;
-            for (int rot = 0; rot < 4&&!finish; rot++) {
+            for (int rot = 0; rot < 4 && !finish; rot++) {
                 if (cub.sides[handPosition(rot, 2)].cell[3] == cub.sides[handPosition(rot, 2)].cell[2] &&
                         cub.sides[handPosition(rot, 3)].cell[1] == cub.sides[handPosition(rot, 3)].cell[2]
                 ) {
 
-                    permutationOfAngles(cub, rot+2);
+                    permutationOfAngles(cub, rot + 2);
 
                     if (!check3leer(cub)) {
-                        permutationOfAngles(cub, rot+2);
+                        permutationOfAngles(cub, rot + 2);
                     }
                     finish = true;
-
                 }
             }
             if (!finish) {
@@ -165,7 +163,6 @@ int i = 0;
             }
             cub.u();
         }
-
     }
 
     void downPifPaf(Cub cub) {
@@ -206,8 +203,6 @@ int i = 0;
                 }
                 angle(cub);
             }
-
-
         }
     }
 
@@ -289,7 +284,6 @@ int i = 0;
                 case 3:
                     cell = 1;
                     break;
-
             }
         }
         return cell;

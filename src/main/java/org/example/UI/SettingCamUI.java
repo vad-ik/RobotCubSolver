@@ -5,7 +5,6 @@ import org.bytedeco.javacv.OpenCVFrameConverter;
 import org.bytedeco.opencv.global.opencv_core;
 import org.bytedeco.opencv.opencv_core.Mat;
 import org.example.Main;
-
 import org.example.camera.Photographer;
 import org.example.camera.RubiksCubeDetection;
 import org.example.camera.SaveSettings;
@@ -55,12 +54,8 @@ public class SettingCamUI extends JFrame {
                 RubiksCubeDetection.photo.end();
                 photographer.end();
                 timer.stop();
-
-
             }
         });
-
-
     }
 
 
@@ -89,7 +84,6 @@ public class SettingCamUI extends JFrame {
             RubiksCubeDetection.photo = new Photographer(0);
             photographer = RubiksCubeDetection.photo;
             timer.start();
-
         }
         JComboBox<String> comboBox = new JComboBox<>(numberOfCameras.toArray(new String[0]));
 
@@ -113,7 +107,6 @@ public class SettingCamUI extends JFrame {
         addPixelBut(buttonPanel, 1, 4);
         addPixelBut(buttonPanel, 4, 7);
         return buttonPanel;
-
     }
 
     void addPixelBut(JPanel buttonPanel, int start, int finish) {
@@ -125,7 +118,6 @@ public class SettingCamUI extends JFrame {
             panel.add(button);
         }
         buttonPanel.add(panel);
-
     }
 
     JPanel edgesPanel() {
@@ -182,14 +174,10 @@ public class SettingCamUI extends JFrame {
         icon2.setImage(image2);
         microVideo.revalidate();
         microVideo.repaint();
-
-
     }
 
     private static BufferedImage matToBufferedImage(Mat mat) {
         Java2DFrameConverter converter = new Java2DFrameConverter();
         return converter.convert(new OpenCVFrameConverter.ToMat().convert(mat));
     }
-
-
 }

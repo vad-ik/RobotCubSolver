@@ -81,6 +81,12 @@ public class TransformToAI {
 
 
    public String transform(Cub cub) {
+        if (cub.sides[Cub.SideNumber.up.ordinal()].cell[5]!=Side.Color.white.ordinal() &&
+       cub.sides[Cub.SideNumber.front.ordinal()].cell[5]!=Side.Color.green.ordinal()
+        ){
+            throw new RuntimeException("неправильный куб, верхний белый, передний зеленый");
+        }
+
         StringBuilder state = new StringBuilder("[");
         Side u = cub.sides[Cub.SideNumber.up.ordinal()];
         Side d = cub.sides[Cub.SideNumber.down.ordinal()];

@@ -73,7 +73,6 @@ public class CubSolver2layer {
                 case 3:
                     cell = 1;
                     break;
-
             }
         }
         return cell;
