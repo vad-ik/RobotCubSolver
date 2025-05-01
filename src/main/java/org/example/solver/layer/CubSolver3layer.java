@@ -5,7 +5,8 @@ import org.example.solver.Side;
 
 public class CubSolver3layer {
 
-    public static final int upColor=Side.Color.white.ordinal();
+    public static final int upColor = Side.Color.white.ordinal();
+
     public void collectThirdLayer(Cub cub) {
         solveCross(cub);
         solveUp(cub);
@@ -30,8 +31,6 @@ public class CubSolver3layer {
             if (i > 100) {
                 System.out.println("ERROR");
                 System.out.println(cub);
-                int b = 0;
-                b = 6 / b;
             }
             boolean finish = false;
             for (int rot = 0; rot < 4 && !finish; rot++) {
@@ -62,11 +61,7 @@ public class CubSolver3layer {
     }
 
     boolean check(Side side) {
-        if (side.cell[1] == side.cell[2] && side.cell[2] == side.cell[3]) {
-            return true;
-        } else {
-            return false;
-        }
+        return side.cell[1] == side.cell[2] && side.cell[2] == side.cell[3];
     }
 
     void permutationOfAngles(Cub cub, int rot) {
@@ -94,8 +89,7 @@ public class CubSolver3layer {
 
         boolean finidh = false;
         for (int rot = 0; rot < 4 && !finidh; rot++) {
-            for (int i = 0; i < 4 && !finidh; i++, cub.u()) {
-
+            for (int i = 0; i < 4 && !finidh; i++) {
                 if (cub.sides[handPosition(rot, 1)].cell[2] == cub.sides[handPosition(rot, 1)].cell[5] &&
                         cub.sides[handPosition(rot, 4)].cell[2] == cub.sides[handPosition(rot, 4)].cell[5] &&
                         cub.sides[handPosition(rot, 2)].cell[2] == cub.sides[handPosition(rot, 2)].cell[5] &&
@@ -122,6 +116,7 @@ public class CubSolver3layer {
                     finidh = true;
                     break;
                 }
+                cub.u();
             }
         }
     }
@@ -176,13 +171,11 @@ public class CubSolver3layer {
 
     void solveCross(Cub cub) {
 
-        if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == upColor &&
+        if (!(cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == upColor &&
                 cub.sides[Cub.SideNumber.up.ordinal()].cell[4] == upColor &&
                 cub.sides[Cub.SideNumber.up.ordinal()].cell[6] == upColor &&
                 cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == upColor
-        ) {
-            //крест собран
-        } else {
+        )) {
             if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == upColor &&
                     cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == upColor) {
                 cub.u();
@@ -210,45 +203,23 @@ public class CubSolver3layer {
 
     void stick(Cub cub) {
         cub.f();
-        pifPaf(0, cub);
+        pifPaf(cub);
         cub.fI();
     }
 
     void angle(Cub cub) {
 
         cub.f();
-        pifPaf(0, cub);
-        pifPaf(0, cub);
+        pifPaf(cub);
+        pifPaf(cub);
         cub.fI();
     }
 
-    void pifPaf(int rotation, Cub cub) {
-        switch (rotation) {
-            case 0:
-                cub.r();
-                cub.u();
-                cub.rI();
-                cub.uI();
-                break;
-            case 1:
-                cub.b();
-                cub.u();
-                cub.bI();
-                cub.uI();
-                break;
-            case 2:
-                cub.l();
-                cub.u();
-                cub.lI();
-                cub.uI();
-                break;
-            case 3:
-                cub.f();
-                cub.u();
-                cub.fI();
-                cub.uI();
-                break;
-        }
+    void pifPaf(Cub cub) {
+        cub.r();
+        cub.u();
+        cub.rI();
+        cub.uI();
     }
 
     int handPosition(int rotation, int side) {

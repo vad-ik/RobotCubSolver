@@ -30,8 +30,11 @@ public class Main {
         new MyUI();
 
 
-//        solveCub();
-//        solveAI();
+//        for (int i = 0; i <1000 ; i++) {
+//            cubConfuse(cub);
+//            solveCub();
+//            chesk(cub);
+//        }
     }
 
     public static void solveAI() {

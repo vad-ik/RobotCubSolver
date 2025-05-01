@@ -2,7 +2,6 @@ package org.example.camera;
 
 import org.example.Main;
 import org.example.solver.Cub;
-import org.example.solver.Side;
 
 public class ColorScanner {
     public RubiksCubeDetection detector;
@@ -11,9 +10,11 @@ public class ColorScanner {
     public ColorScanner(boolean debug) {
         detector = new RubiksCubeDetection(debug);
     }
-    public void save(){
+
+    public void save() {
         detector.save();
     }
+
     public void scan(Cub cub) {//тестовый набор
         nextPhoto(cub, false);
         save();
@@ -25,7 +26,7 @@ public class ColorScanner {
         cub.d();
         sendToArduino(cub);
         nextPhoto(cub, false);
-       save();
+        save();
         cub.b();
         cub.l();
         cub.r();
@@ -33,7 +34,7 @@ public class ColorScanner {
         cub.uI();
         sendToArduino(cub);
         nextPhoto(cub, false);
-       save();
+        save();
         cub.b();
         cub.b();
         cub.r();
@@ -48,14 +49,14 @@ public class ColorScanner {
         cub.f();
         sendToArduino(cub);
         nextPhoto(cub, false);
-       save();
+        save();
         cub.f();
         cub.r();
         cub.r();
         cub.f();
         sendToArduino(cub);
         nextPhoto(cub, false);
-       save();
+        save();
         cub.rI();
         cub.u();
         sendToArduino(cub);
@@ -75,7 +76,7 @@ public class ColorScanner {
         Main.radio.writeString(cub.solver.toString());
         cub.solver = new StringBuilder();
         try {
-            Thread.sleep(100*5);
+            Thread.sleep(100 * 5);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -90,8 +91,9 @@ public class ColorScanner {
         scanner.scan(cub);
         System.out.println(cub.toString2());
     }
-    public void nextPhoto(Cub cub, boolean b){
-        detector.nextPhoto(cub,b);
+
+    public void nextPhoto(Cub cub, boolean b) {
+        detector.nextPhoto(cub, b);
 //        cub.sides[Cub.SideNumber.front.ordinal()].cell[2] = Side.Color.orange.ordinal();
 //        cub.sides[Cub.SideNumber.front.ordinal()].cell[3] = Side.Color.orange.ordinal();
 //        cub.sides[Cub.SideNumber.front.ordinal()].cell[5] = Side.Color.orange.ordinal();

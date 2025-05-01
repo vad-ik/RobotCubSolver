@@ -95,11 +95,7 @@ public class CubSolver2layer {
     }
 
     boolean check(Side side) {
-        if (side.cell[4] == side.cell[5] && side.cell[5] == side.cell[6]) {
-            return true;
-        } else {
-            return false;
-        }
+        return side.cell[4] == side.cell[5] && side.cell[5] == side.cell[6];
     }
 
     void setLeft(int rotation, Cub cub) {

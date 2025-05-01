@@ -23,11 +23,7 @@ public class CubSolver1layer {
     }
 
     boolean check(Side side) {
-        if (side.cell[7] == side.cell[8] && side.cell[8] == side.cell[9]) {
-            return true;
-        } else {
-            return false;
-        }
+        return side.cell[7] == side.cell[8] && side.cell[8] == side.cell[9];
     }
 
     void solveAngles(Cub cub) {

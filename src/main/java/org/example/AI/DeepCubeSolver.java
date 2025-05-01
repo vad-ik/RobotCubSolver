@@ -56,7 +56,7 @@ public class DeepCubeSolver {
                     while ((errorLine = br.readLine()) != null) {
                         errorResponse.append(errorLine.trim());
                     }
-                    System.out.println("Тело ошибки: " + errorResponse.toString());
+                    System.out.println("Тело ошибки: " + errorResponse);
                 }
             }
         } catch (Exception e) {

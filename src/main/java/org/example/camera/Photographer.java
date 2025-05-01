@@ -14,8 +14,8 @@ import java.util.List;
 
 public class Photographer {
 
-    private Java2DFrameConverter java2DConverter = new Java2DFrameConverter();
-    private OpenCVFrameConverter.ToMat openCVConverter = new OpenCVFrameConverter.ToMat();
+    private final Java2DFrameConverter java2DConverter = new Java2DFrameConverter();
+    private final OpenCVFrameConverter.ToMat openCVConverter = new OpenCVFrameConverter.ToMat();
     private Webcam webcam;
 
     public Photographer(int cam) {

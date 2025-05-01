@@ -7,7 +7,7 @@ public class Cub {
         front,
         right,
         back,
-        down;
+        down
     }
     public StringBuilder solver = new StringBuilder();
 

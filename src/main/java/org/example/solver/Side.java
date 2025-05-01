@@ -20,9 +20,7 @@ public class Side {
 
     }
     Side(Side side){
-        for (int i = 0; i < side.cell.length; i++) {
-            this.cell[i] = side.cell[i];
-        }
+        System.arraycopy(side.cell, 0, this.cell, 0, side.cell.length);
     }
     public enum Color {
         white,

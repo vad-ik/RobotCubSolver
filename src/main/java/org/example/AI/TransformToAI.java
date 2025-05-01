@@ -14,15 +14,15 @@ import java.util.*;
 public class TransformToAI {
 
     // Структура для хранения данных
-    private Map<List<Integer>, Map<Integer, Integer>> dataStorage = new HashMap<>();
+    private final Map<List<Integer>, Map<Integer, Integer>> dataStorage = new HashMap<>();
 
     public TransformToAI() {
-        this.addObject(Arrays.asList(Side.Color.yellow.ordinal()), Arrays.asList(13));
-        this.addObject(Arrays.asList(Side.Color.orange.ordinal()), Arrays.asList(22));
-        this.addObject(Arrays.asList(Side.Color.blue.ordinal()), Arrays.asList(40));
-        this.addObject(Arrays.asList(Side.Color.red.ordinal()), Arrays.asList(31));
-        this.addObject(Arrays.asList(Side.Color.green.ordinal()), Arrays.asList(49));
-        this.addObject(Arrays.asList(Side.Color.white.ordinal()), Arrays.asList(4));
+        this.addObject(List.of(Side.Color.yellow.ordinal()), List.of(13));
+        this.addObject(List.of(Side.Color.orange.ordinal()), List.of(22));
+        this.addObject(List.of(Side.Color.blue.ordinal()), List.of(40));
+        this.addObject(List.of(Side.Color.red.ordinal()), List.of(31));
+        this.addObject(List.of(Side.Color.green.ordinal()), List.of(49));
+        this.addObject(List.of(Side.Color.white.ordinal()), List.of(4));
 
 
         this.addObject(Arrays.asList(Side.Color.white.ordinal(), Side.Color.orange.ordinal(), Side.Color.blue.ordinal()), Arrays.asList(2, 20, 44));
