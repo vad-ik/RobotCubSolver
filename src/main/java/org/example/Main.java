@@ -43,6 +43,7 @@ public class Main {
         String state = transformer.transform(cub);
         String ans = DeepCubeSolver.send(state);
 
+        assert ans != null;
         ans = (ans.split("\\["))[1].split("]")[0];
 
         String path = rotateAI(ans);

@@ -50,15 +50,10 @@ public class CubSolver1layer {
 
                         cub.u();
                         j += 3;
-                        if (j == 30) {
-                            int a = 0;
-                            int b = 6;
-                            b = b / a;
-                        }
                     }
 
                     int k = 0;
-                    while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[rotatePifPaf(i + j, 3)] == downColor) &&
+                    while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[rotatePifPaf(i + j)] == downColor) &&
                             (cub.sides[handPosition(i + j, 2)].cell[5] == cub.sides[handPosition(i + j, 2)].cell[9]) &&
                             (cub.sides[handPosition(i + j, 3)].cell[5] == cub.sides[handPosition(i + j, 3)].cell[7])) &&
 
@@ -155,18 +150,13 @@ public class CubSolver1layer {
     }
 
     int upDownPosition(int cell) {
-        switch (cell) {
-
-            case 2:
-                return 8;
-            case 6:
-                return 6;
-            case 8:
-                return 2;
-            case 4:
-                return 4;
-        }
-        return 0;
+        return switch (cell) {
+            case 2 -> 8;
+            case 6 -> 6;
+            case 8 -> 2;
+            case 4 -> 4;
+            default -> 0;
+        };
     }
 
     int handPosition(int rotation, int side) {
@@ -209,7 +199,8 @@ public class CubSolver1layer {
         return cell;
     }
 
-    int rotatePifPaf(int rotation, int cell) {
+    int rotatePifPaf(int rotation) {
+        int cell=3;
         for (int i = 0; i < rotation; i++) {
             switch (cell) {
                 case 1:

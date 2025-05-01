@@ -230,38 +230,6 @@ public class CubSolver3layer {
         return i;
     }
 
-    int handCell(int rotation, int cell) {
-        for (int i = 0; i < rotation; i++) {
-            switch (cell) {
-                case 2:
-                    cell = 4;
-                    break;
-                case 6:
-                    cell = 2;
-                    break;
-                case 8:
-                    cell = 6;
-                    break;
-                case 4:
-                    cell = 8;
-                    break;
-                case 1:
-                    cell = 7;
-                    break;
-                case 7:
-                    cell = 9;
-                    break;
-                case 9:
-                    cell = 3;
-                    break;
-                case 3:
-                    cell = 1;
-                    break;
-            }
-        }
-        return cell;
-    }
-
     void hendRotate(Cub cub, int comand) {
         switch (comand % 4) {
             case 0:

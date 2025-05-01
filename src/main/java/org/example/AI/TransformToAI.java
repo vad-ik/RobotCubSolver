@@ -94,7 +94,7 @@ public class TransformToAI {
         Side l = cub.sides[Cub.SideNumber.left.ordinal()];
         Side f = cub.sides[Cub.SideNumber.front.ordinal()];
         Side b = cub.sides[Cub.SideNumber.back.ordinal()];
-        oneSide(cub, state, u, new int[]{
+        oneSide( state, u, new int[]{
                 l.cell[1], b.cell[3],
                 b.cell[2],
                 r.cell[3], b.cell[1],
@@ -104,7 +104,7 @@ public class TransformToAI {
                 f.cell[2],
                 f.cell[3], r.cell[1]
         });
-        oneSide(cub, state, d, new int[]{
+        oneSide( state, d, new int[]{
                 l.cell[9], f.cell[7],
                 f.cell[8],
                 f.cell[9], r.cell[7],
@@ -114,7 +114,7 @@ public class TransformToAI {
                 b.cell[8],
                 b.cell[7], r.cell[9]
         });
-        oneSide(cub, state, l, new int[]{
+        oneSide( state, l, new int[]{
                 u.cell[1], b.cell[3],
                 u.cell[4],
                 u.cell[7], f.cell[1],
@@ -124,7 +124,7 @@ public class TransformToAI {
                 d.cell[4],
                 d.cell[1], f.cell[7]
         });
-        oneSide(cub, state, r, new int[]{
+        oneSide( state, r, new int[]{
                 u.cell[9], f.cell[3],
                 u.cell[6],
                 u.cell[3], b.cell[1],
@@ -135,7 +135,7 @@ public class TransformToAI {
                 d.cell[9], b.cell[7]
         });
         StringBuilder back=new StringBuilder();
-        oneSide(cub, back, b, new int[]{
+        oneSide( back, b, new int[]{
                 u.cell[3], r.cell[3],
                 u.cell[2],
                 u.cell[1], l.cell[1],
@@ -150,7 +150,7 @@ public class TransformToAI {
             state.append(backArr[i]);
             state.append(",");
         }
-        oneSide(cub, state, f, new int[]{
+        oneSide( state, f, new int[]{
                 u.cell[7], l.cell[3],
                 u.cell[8],
                 u.cell[9], r.cell[1],
@@ -166,7 +166,7 @@ public class TransformToAI {
         return state.append("]").toString();
     }
 
-    void oneSide(Cub cub, StringBuilder state, Side now, int[] point) {
+    void oneSide( StringBuilder state, Side now, int[] point) {
 
 
         int i = 1;

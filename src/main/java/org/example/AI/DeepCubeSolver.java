@@ -3,9 +3,7 @@ package org.example.AI;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public class DeepCubeSolver {
@@ -14,8 +12,12 @@ public class DeepCubeSolver {
         try {
             System.out.println("данные отправляются");
             // URL сервера
-            URL url = new URL("https://deepcube.igb.uci.edu/solve");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            URL url = URI.create("https://deepcube.igb.uci.edu/solve").toURL();
+
+// Настраиваем прокси (например, HTTP-прокси на localhost:8080)
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy.example.com", 8080));
+
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();//сюда прокси
 
             // Настройка запроса
             connection.setRequestMethod("POST");
@@ -60,7 +62,7 @@ public class DeepCubeSolver {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("ошибка при отправке данных на сервер"+e);
         }
         return null;
     }

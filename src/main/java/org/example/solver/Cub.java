@@ -109,24 +109,16 @@ public class Cub {
     }
 
     private String getAnsiColor(Side.Color color) {
-        switch (color) {
-            case yellow:
-                return "\u001B[33m"; // Желтый
-            case orange:
-                return "\u001B[38;5;208m"; // Оранжевый
-            case blue:
-                return "\u001B[34m"; // Синий
-            case red:
-                return "\u001B[31m"; // Красный
-            case green:
-                return "\u001B[32m"; // Зеленый
-            case white:
-                return "\u001B[37m"; // Белый
-            case Non:
-                return "\u001B[0m"; // Нет цвета (сброс)
-            default:
-                return "\u001B[0m"; // По умолчанию сброс цвета
-        }
+        return switch (color) {
+            case yellow -> "\u001B[33m"; // Желтый
+            case orange -> "\u001B[38;5;208m"; // Оранжевый
+            case blue -> "\u001B[34m"; // Синий
+            case red -> "\u001B[31m"; // Красный
+            case green -> "\u001B[32m"; // Зеленый
+            case white -> "\u001B[37m"; // Белый
+            case Non -> "\u001B[0m"; // Нет цвета (сброс)
+            default -> "\u001B[0m"; // По умолчанию сброс цвета
+        };
     }
 
     public void r() {

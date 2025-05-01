@@ -41,7 +41,6 @@ public class Radio {
             new ComPortSelectionUI();
         }
 
-      //  readThread.start();
     }
 
     public void writeString(String string) {
@@ -83,10 +82,4 @@ public class Radio {
         }
     }
 
-    class RadioReadThread extends Thread {
-        @Override
-        public void run() {
-            read();
-        }
-    }
 }

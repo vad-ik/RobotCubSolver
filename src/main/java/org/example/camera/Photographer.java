@@ -46,8 +46,8 @@ public class Photographer {
     public static List<String> getConnectedCameras() {
         List<String> names = new ArrayList<>();
         List<Webcam> web = Webcam.getWebcams();
-        for (int i = 0; i < web.size(); i++) {
-            names.add(web.get(i).getName());
+        for (Webcam value : web) {
+            names.add(value.getName());
         }
         return names;
     }

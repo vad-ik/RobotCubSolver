@@ -11,13 +11,13 @@ public class CubSolver2layer {
 
             boolean upLost = true;
             for (int ret = 0; ret < 4; ret++) {
-                if (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(ret, 8)] != CubSolver3layer.upColor &&
+                if (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(ret)] != CubSolver3layer.upColor &&
                         cub.sides[handPosition(ret, 2)].cell[2] != CubSolver3layer.upColor) {
                     upLost = false;
 
                     ArrayList<Integer> color = new ArrayList<>();
                     color.add(cub.sides[handPosition(ret, 2)].cell[2]);
-                    color.add(cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(ret, 8)]);
+                    color.add(cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(ret)]);
                     int j = 0;
                     while (!(color.contains(cub.sides[handPosition(ret + j, 2)].cell[5]) &&
                             color.contains(cub.sides[handPosition(ret + j, 3)].cell[5]))) {
@@ -46,7 +46,8 @@ public class CubSolver2layer {
         }
     }
 
-    int handCell(int rotation, int cell) {
+    int handCell(int rotation) {
+        int cell=8;
         for (int i = 0; i < rotation; i++) {
             switch (cell) {
                 case 2:

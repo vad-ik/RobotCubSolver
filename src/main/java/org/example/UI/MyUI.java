@@ -23,7 +23,6 @@ public class MyUI extends JFrame {
 
         setLocationRelativeTo(null); // окно - в центре экрана
         backgroundImage = new ImageIcon("src/main/resources/background.jpg");
-        JLabel backgroundLabel = new JLabel(backgroundImage);
 
 
         // Добавление панелей на JFrame
@@ -100,16 +99,11 @@ public class MyUI extends JFrame {
         settingPanel.add(dataSetTest);
 
         JButton setCub = new JButton("задать кубик с консоли");
-        setCub.addActionListener(_ -> {
-
-            setCubConsole();
-        });
+        setCub.addActionListener(_ -> setCubConsole());
         settingPanel.add(setCub);
 
         JButton getCub = new JButton("вывести кубик в консоль");
-        getCub.addActionListener(_ -> {
-            System.out.println(Main.cub.toString2());
-        });
+        getCub.addActionListener(_ -> System.out.println(Main.cub.toString2()));
         settingPanel.add(getCub);
 
         JButton confuse = new JButton("разобрать до предыдущего состояния");
