@@ -108,3 +108,11 @@ public class ColorScanner {
 //        cub.sides[Cub.SideNumber.right.ordinal()].cell[7] = Side.Color.orange.ordinal();
     }
 }
+/*
+wwwwwwwww
+ooooooooo
+ggggggggg
+rrrrrrrrr
+bbbbbbbbb
+yyyyyyyyy
+ */

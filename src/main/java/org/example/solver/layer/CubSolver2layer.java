@@ -11,8 +11,8 @@ public class CubSolver2layer {
 
             boolean upLost = true;
             for (int ret = 0; ret < 4; ret++) {
-                if (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(ret, 8)] != Side.Color.yellow.ordinal() &&
-                        cub.sides[handPosition(ret, 2)].cell[2] != Side.Color.yellow.ordinal()) {
+                if (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(ret, 8)] != CubSolver3layer.upColor &&
+                        cub.sides[handPosition(ret, 2)].cell[2] != CubSolver3layer.upColor) {
                     upLost = false;
 
                     ArrayList<Integer> color = new ArrayList<>();
@@ -37,8 +37,8 @@ public class CubSolver2layer {
             if (upLost) {
                 // break;
                 for (int i = 0; i < 4; i++) {
-                    if (cub.sides[handPosition(i, 2)].cell[6] != Side.Color.yellow.ordinal() &&
-                            cub.sides[handPosition(i, 3)].cell[4] != Side.Color.yellow.ordinal()) {
+                    if (cub.sides[handPosition(i, 2)].cell[6] != CubSolver3layer.upColor &&
+                            cub.sides[handPosition(i, 3)].cell[4] != CubSolver3layer.upColor) {
                         setRight(i, cub);
                     }
                 }

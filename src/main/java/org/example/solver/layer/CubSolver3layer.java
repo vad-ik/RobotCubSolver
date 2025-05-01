@@ -4,6 +4,8 @@ import org.example.solver.Cub;
 import org.example.solver.Side;
 
 public class CubSolver3layer {
+
+    public static final int upColor=Side.Color.white.ordinal();
     public void collectThirdLayer(Cub cub) {
         solveCross(cub);
         solveUp(cub);
@@ -158,7 +160,7 @@ public class CubSolver3layer {
         for (int i = 0; i < 4; i++) {
 
             //добавить проверку на сломанный кубик
-            while (cub.sides[Cub.SideNumber.up.ordinal()].cell[3] != Side.Color.yellow.ordinal()) {
+            while (cub.sides[Cub.SideNumber.up.ordinal()].cell[3] != upColor) {
                 downPifPaf(cub);
             }
             cub.u();
@@ -174,31 +176,31 @@ public class CubSolver3layer {
 
     void solveCross(Cub cub) {
 
-        if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == Side.Color.yellow.ordinal() &&
-                cub.sides[Cub.SideNumber.up.ordinal()].cell[4] == Side.Color.yellow.ordinal() &&
-                cub.sides[Cub.SideNumber.up.ordinal()].cell[6] == Side.Color.yellow.ordinal() &&
-                cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == Side.Color.yellow.ordinal()
+        if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == upColor &&
+                cub.sides[Cub.SideNumber.up.ordinal()].cell[4] == upColor &&
+                cub.sides[Cub.SideNumber.up.ordinal()].cell[6] == upColor &&
+                cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == upColor
         ) {
             //крест собран
         } else {
-            if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == Side.Color.yellow.ordinal() &&
-                    cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == Side.Color.yellow.ordinal()) {
+            if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == upColor &&
+                    cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == upColor) {
                 cub.u();
             }
-            if (cub.sides[Cub.SideNumber.up.ordinal()].cell[4] == Side.Color.yellow.ordinal() &&
-                    cub.sides[Cub.SideNumber.up.ordinal()].cell[6] == Side.Color.yellow.ordinal()) {
+            if (cub.sides[Cub.SideNumber.up.ordinal()].cell[4] == upColor &&
+                    cub.sides[Cub.SideNumber.up.ordinal()].cell[6] == upColor) {
                 stick(cub);
-            } else if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] != Side.Color.yellow.ordinal() &&
-                    cub.sides[Cub.SideNumber.up.ordinal()].cell[4] != Side.Color.yellow.ordinal() &&
-                    cub.sides[Cub.SideNumber.up.ordinal()].cell[6] != Side.Color.yellow.ordinal() &&
-                    cub.sides[Cub.SideNumber.up.ordinal()].cell[8] != Side.Color.yellow.ordinal()) {
+            } else if (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] != upColor &&
+                    cub.sides[Cub.SideNumber.up.ordinal()].cell[4] != upColor &&
+                    cub.sides[Cub.SideNumber.up.ordinal()].cell[6] != upColor &&
+                    cub.sides[Cub.SideNumber.up.ordinal()].cell[8] != upColor) {
                 stick(cub);
                 cub.u();
                 cub.u();
                 angle(cub);
             } else {
-                while (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] != Side.Color.yellow.ordinal() ||
-                        cub.sides[Cub.SideNumber.up.ordinal()].cell[4] != Side.Color.yellow.ordinal()) {
+                while (cub.sides[Cub.SideNumber.up.ordinal()].cell[2] != upColor ||
+                        cub.sides[Cub.SideNumber.up.ordinal()].cell[4] != upColor) {
                     cub.u();
                 }
                 angle(cub);

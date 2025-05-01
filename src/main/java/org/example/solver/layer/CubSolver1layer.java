@@ -6,8 +6,8 @@ import org.example.solver.Side;
 import java.util.ArrayList;
 
 public class CubSolver1layer {
+    private final int downColor=Side.Color.yellow.ordinal();
     public void collectFirstLayer(Cub cub) {
-
 
         pasteWhite(cub);
         solveCross(cub);
@@ -32,17 +32,17 @@ public class CubSolver1layer {
 
     void solveAngles(Cub cub) {
 
-        while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[1] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[3] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[7] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[9] == Side.Color.white.ordinal()) &&
+        while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[1] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[3] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[7] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[9] == downColor) &&
                 check1leer(cub)
         )) {
 
             for (int i = 0; i < 4; i++) {
-                if ((cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(i, 9)] == Side.Color.white.ordinal()) ||
-                        (cub.sides[handPosition(i, 2)].cell[3] == Side.Color.white.ordinal()) ||
-                        (cub.sides[handPosition(i, 3)].cell[1] == Side.Color.white.ordinal())) {
+                if ((cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(i, 9)] == downColor) ||
+                        (cub.sides[handPosition(i, 2)].cell[3] == downColor) ||
+                        (cub.sides[handPosition(i, 3)].cell[1] == downColor)) {
                     ArrayList<Integer> color = new ArrayList<>();
                     color.add(cub.sides[handPosition(i, 2)].cell[3]);
                     color.add(cub.sides[handPosition(i, 3)].cell[1]);
@@ -62,7 +62,7 @@ public class CubSolver1layer {
                     }
 
                     int k = 0;
-                    while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[rotatePifPaf(i + j, 3)] == Side.Color.white.ordinal()) &&
+                    while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[rotatePifPaf(i + j, 3)] == downColor) &&
                             (cub.sides[handPosition(i + j, 2)].cell[5] == cub.sides[handPosition(i + j, 2)].cell[9]) &&
                             (cub.sides[handPosition(i + j, 3)].cell[5] == cub.sides[handPosition(i + j, 3)].cell[7])) &&
 
@@ -76,9 +76,9 @@ public class CubSolver1layer {
             }
 
             for (int i = 0; i < 4; i++) {
-                if ((cub.sides[handPosition(i, 2)].cell[9] == Side.Color.white.ordinal()) ||
-                        (cub.sides[handPosition(i, 3)].cell[7] == Side.Color.white.ordinal()) ||
-                        (cub.sides[Cub.SideNumber.down.ordinal()].cell[handCell(i, 3)] == Side.Color.white.ordinal() &&
+                if ((cub.sides[handPosition(i, 2)].cell[9] == downColor) ||
+                        (cub.sides[handPosition(i, 3)].cell[7] == downColor) ||
+                        (cub.sides[Cub.SideNumber.down.ordinal()].cell[handCell(i, 3)] == downColor &&
                                 (cub.sides[handPosition(i, 2)].cell[9] != cub.sides[handPosition(i, 2)].cell[8] ||
                                         cub.sides[handPosition(i, 3)].cell[7] != cub.sides[handPosition(i, 3)].cell[8]))) {
                     pifPaf((i), cub);
@@ -88,20 +88,20 @@ public class CubSolver1layer {
     }
 
     void solveCross(Cub cub) {
-        while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[2] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[4] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[6] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[8] == Side.Color.white.ordinal())
+        while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[2] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[4] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[6] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[8] == downColor)
         )) {
             for (int rot = 0; rot < 4; rot++) {
                 int i = 0;
                 while (!((cub.sides[handPosition(rot, 2)].cell[2] == cub.sides[handPosition(rot, 2)].cell[5]) &&
-                        cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == Side.Color.white.ordinal()) &&
+                        cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == downColor) &&
                         i < 5) {
                     cub.u();
                     i++;
                 }
-                if (i != 5 && cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == Side.Color.white.ordinal()) {
+                if (i != 5 && cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == downColor) {
                     handRotation(cub, rot, 9);
                     handRotation(cub, rot, 9);
 
@@ -112,33 +112,33 @@ public class CubSolver1layer {
     }
 
     void pasteWhite(Cub cub) {
-        while (!((cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.up.ordinal()].cell[4] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.up.ordinal()].cell[6] == Side.Color.white.ordinal()) &&
-                (cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == Side.Color.white.ordinal())
+        while (!((cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == downColor) &&
+                (cub.sides[Cub.SideNumber.up.ordinal()].cell[4] == downColor) &&
+                (cub.sides[Cub.SideNumber.up.ordinal()].cell[6] == downColor) &&
+                (cub.sides[Cub.SideNumber.up.ordinal()].cell[8] == downColor)
         )) {
 
 
             for (int rot = 0; rot < 4; rot++) {
-                if (cub.sides[handPosition(rot, 2)].cell[2] == Side.Color.white.ordinal()) {
+                if (cub.sides[handPosition(rot, 2)].cell[2] == downColor) {
                     handRotation(cub, rot, 9);
                 }
-                if (cub.sides[handPosition(rot, 2)].cell[8] == Side.Color.white.ordinal()) {
-                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == Side.Color.white.ordinal()) {
+                if (cub.sides[handPosition(rot, 2)].cell[8] == downColor) {
+                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == downColor) {
                         cub.u();
                     }
 
                     handRotation(cub, rot, 9);
                 }
-                if (cub.sides[handPosition(rot, 2)].cell[4] == Side.Color.white.ordinal()) {
-                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 4)] == Side.Color.white.ordinal()) {
+                if (cub.sides[handPosition(rot, 2)].cell[4] == downColor) {
+                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 4)] == downColor) {
                         cub.u();
                     }
                     handRotation(cub, rot, 1);
                 }
 
-                if (cub.sides[handPosition(rot, 2)].cell[6] == Side.Color.white.ordinal()) {
-                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 6)] == Side.Color.white.ordinal()) {
+                if (cub.sides[handPosition(rot, 2)].cell[6] == downColor) {
+                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 6)] == downColor) {
                         cub.u();
                     }
                     handRotation(cub, rot, 2);
@@ -146,9 +146,9 @@ public class CubSolver1layer {
             }
 
             for (int i = 2; i < 10; i += 2) {
-                if (cub.sides[Cub.SideNumber.down.ordinal()].cell[i] == Side.Color.white.ordinal()) {
+                if (cub.sides[Cub.SideNumber.down.ordinal()].cell[i] == downColor) {
 
-                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[upDownPosition(i)] == Side.Color.white.ordinal()) {
+                    while (cub.sides[Cub.SideNumber.up.ordinal()].cell[upDownPosition(i)] == downColor) {
                         cub.u();
                     }
 

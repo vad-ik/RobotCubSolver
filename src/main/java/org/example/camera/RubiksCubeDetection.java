@@ -36,9 +36,10 @@ public class RubiksCubeDetection {
         }
         photo = new Photographer(setting.getCamPort());
     }
-    public void save(){
-String path="C:\\rubiks\\debug\\";
-        opencv_imgcodecs.imwrite(path+UUID.randomUUID().toString().substring(0, 8)+".png", image);
+
+    public void save() {
+        String path = "C:\\rubiks\\debug\\";
+        opencv_imgcodecs.imwrite(path + UUID.randomUUID().toString().substring(0, 8) + ".png", image);
     }
 
     RubiksCubeDetection(boolean debug) {
@@ -122,7 +123,8 @@ String path="C:\\rubiks\\debug\\";
         getEdge(srcMat2, image, 0, 2, cub, debug, 2);
         if (debug) {
             drawPoint();
-            opencv_highgui.waitKey(0);
+            opencv_highgui.waitKeyEx();
+//            opencv_highgui.waitKey(0);
             opencv_highgui.destroyAllWindows();
         }
     }
@@ -220,30 +222,31 @@ String path="C:\\rubiks\\debug\\";
         int red = (int) meanColor.get(2);
 
         Color targetColor = new Color(red, green, blue);
-        if (!debug) {
+        if (debug) {
             System.out.println("rgb(" + red + ", " + green + ", " + blue + ")");
         }
-        String closestColorName = getColorForRatio(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue());
+        String closestColorName = getColorForRatio(targetColor.getRed(), targetColor.getGreen(), targetColor.getBlue(), debug);
 
         System.out.println("Ближайший цвет: " + closestColorName);
         return closestColorName;
     }
 
 
-    public static String getColorForRatio(double r, double g, double b) {
+    public static String getColorForRatio(double r, double g, double b, boolean debug) {
 
         float[] hsv = new float[3];
         Color.RGBtoHSB((int) r, (int) g, (int) b, hsv);
-        System.out.println((Arrays.toString(hsv)));
         r++;
         g++;
         b++;
-
-        System.out.println("r/b=" + (r / b));
-        System.out.println("r/g=" + (r / g));
-        System.out.println("b/g=" + (b / g));
-        System.out.println("g/r=" + (g / r));
-        System.out.println("g/b=" + (g / b));
+        if (debug) {
+            System.out.println((Arrays.toString(hsv)));
+            System.out.println("r/b=" + (r / b));
+            System.out.println("r/g=" + (r / g));
+            System.out.println("b/g=" + (b / g));
+            System.out.println("g/r=" + (g / r));
+            System.out.println("g/b=" + (g / b));
+        }
         if (r / g > 3 && r / b > 3) {
             return "red";
         }
@@ -256,13 +259,12 @@ String path="C:\\rubiks\\debug\\";
         if (0.8 < r / b && r / b < 1.2 && 0.8 < b / g && b / g < 1.2 && 0.8 < g / r && g / r < 1.2) {
             return "white";
         }
-        if(r / g > 1.2 && r / b > 1.2) {
-            return"orange";
+        if (r / g > 1.2 && r / b > 1.2) {
+            return "orange";
         }
         if (r / b > 1.2 && g / b > 1.2) {
             return "yellow";
         }
         return "Non";
     }
-
 }

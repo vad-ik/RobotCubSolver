@@ -55,7 +55,8 @@ public class Photographer {
     public Mat getNext() {
         // Захват изображения
         Mat mat = openCVConverter.convert(java2DConverter.convert(webcam.getImage()));
-
+        System.out.println(webcam.isOpen());
+        System.out.println(mat);
         // Меняем порядок каналов (RGB → BGR)
         opencv_imgproc.cvtColor(mat, mat, opencv_imgproc.COLOR_RGB2BGR);
 

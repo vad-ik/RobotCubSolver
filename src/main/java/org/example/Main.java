@@ -126,7 +126,7 @@ public class Main {
         solver.solve(cub);
         chesk(cub);
 
-
+        System.out.println(cub.solver.toString());
         radio.writeString(cub.solver.toString());
     }
 

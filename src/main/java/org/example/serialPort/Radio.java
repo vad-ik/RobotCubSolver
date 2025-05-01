@@ -13,7 +13,6 @@ import java.io.InputStream;
 public class Radio {
 
     SerialPort sp = null;
-    RadioReadThread readThread = new RadioReadThread();
 
     public Radio() {
 

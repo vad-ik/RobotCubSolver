@@ -112,8 +112,9 @@ public class MyUI extends JFrame {
         });
         settingPanel.add(getCub);
 
-        JButton confuse = new JButton("отменить сборку");
+        JButton confuse = new JButton("разобрать до предыдущего состояния");
         confuse.addActionListener(_ -> {
+            //todo это сейчас только ии записывает, добавить послойную
             Main.radio.writeString(Main.wayBack);
         });
         settingPanel.add(confuse);
@@ -174,7 +175,8 @@ public class MyUI extends JFrame {
         scanBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Main.scanner.detector.updateSetting();
+                Main.scanner.detector.startCam();
                 Main.scanner.scan(Main.cub);
             }
         });
@@ -205,6 +207,16 @@ public class MyUI extends JFrame {
         newBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                switch (name) {
+                    case "u" -> Main.cub.u();
+                    case "l" -> Main.cub.l();
+                    case "f" -> Main.cub.f();
+                    case "r" -> Main.cub.r();
+                    case "b" -> Main.cub.b();
+                    case "d" -> Main.cub.d();
+                    default -> throw new IllegalArgumentException("Invalid input button rotate: " + name);
+                }
+                Main.cub.solver=new StringBuilder();
                 Main.radio.writeString(name);
             }
         });
