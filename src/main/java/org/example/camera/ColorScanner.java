@@ -5,71 +5,80 @@ import org.example.solver.Cub;
 
 public class ColorScanner {
     public RubiksCubeDetection detector;
-
+    private final boolean debug=true;
 
     public ColorScanner(boolean debug) {
         detector = new RubiksCubeDetection(debug);
     }
 
     public void save() {
+        if (debug){
         detector.save();
-    }
+    }}
 
     public void scan(Cub cub) {//тестовый набор
+        debugSout(cub);
         nextPhoto(cub, false);
         save();
-        cub.r();
-        cub.r();
-        cub.u();
-        cub.u();
-        cub.d();
-        cub.d();
+        cub.r();debugSout(cub);
+        cub.r();debugSout(cub);
+        cub.u();debugSout(cub);
+        cub.u();debugSout(cub);
+        cub.d();debugSout(cub);
+        cub.d();debugSout(cub);
         sendToArduino(cub);
         nextPhoto(cub, false);
         save();
-        cub.b();
-        cub.l();
-        cub.r();
-        cub.r();
-        cub.uI();
+        cub.b();debugSout(cub);
+        cub.l();debugSout(cub);
+        cub.r();debugSout(cub);
+        cub.r();debugSout(cub);
+        cub.uI();debugSout(cub);
         sendToArduino(cub);
         nextPhoto(cub, false);
         save();
-        cub.b();
-        cub.b();
-        cub.r();
-        cub.f();
+        cub.b();debugSout(cub);
+        cub.b();debugSout(cub);
+        cub.r();debugSout(cub);
+        cub.f();debugSout(cub);
         sendToArduino(cub);
         nextPhoto(cub, false);
         save();
-        cub.u();
-        cub.u();
-        cub.d();
-        cub.d();
-        cub.f();
+        cub.u();debugSout(cub);
+        cub.u();debugSout(cub);
+        cub.d();debugSout(cub);
+        cub.d();debugSout(cub);
+        cub.f();debugSout(cub);
         sendToArduino(cub);
         nextPhoto(cub, false);
         save();
-        cub.f();
-        cub.r();
-        cub.r();
-        cub.f();
+        cub.f();debugSout(cub);
+        cub.r();debugSout(cub);
+        cub.r();debugSout(cub);
+        cub.f();debugSout(cub);
         sendToArduino(cub);
         nextPhoto(cub, false);
         save();
-        cub.rI();
-        cub.u();
+        cub.rI();debugSout(cub);
+        cub.u();debugSout(cub);
         sendToArduino(cub);
         nextPhoto(cub, false);
         save();
-        cub.d();
-        cub.fI();
-        cub.rI();
+        cub.d();debugSout(cub);
+        cub.fI();debugSout(cub);
+        cub.rI();debugSout(cub);
         sendToArduino(cub);
         nextPhoto(cub, false);
         save();
 
         System.out.println(cub.toString2());
+    }
+
+    private void debugSout(Cub cub){
+        if (debug){
+
+            System.out.println(cub.toString2());
+        }
     }
 
     void sendToArduino(Cub cub) {
@@ -110,11 +119,3 @@ public class ColorScanner {
 //        cub.sides[Cub.SideNumber.right.ordinal()].cell[7] = Side.Color.orange.ordinal();
     }
 }
-/*
-wwwwwwwww
-ooooooooo
-ggggggggg
-rrrrrrrrr
-bbbbbbbbb
-yyyyyyyyy
- */

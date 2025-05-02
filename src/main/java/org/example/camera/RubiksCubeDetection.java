@@ -12,6 +12,7 @@ import org.example.solver.Cub;
 import org.example.solver.Side;
 
 import java.awt.*;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -21,8 +22,6 @@ import static org.bytedeco.opencv.global.opencv_core.mean;
 
 public class RubiksCubeDetection {
     public static Photographer photo;
-
-
     public static Mat srcMat = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
     public static Mat srcMat2 = new Mat(4, 1, opencv_core.CV_32FC2); // 4 точки, 1 канал, тип CV_32FC2 (2 канала: x и y)
     public static Mat dstMat = new Mat(4, 1, opencv_core.CV_32FC2);
@@ -37,9 +36,21 @@ public class RubiksCubeDetection {
         photo = new Photographer(setting.getCamPort());
     }
 
+    private String debugString = "";
+
     public void save() {
         String path = "C:\\rubiks\\debug\\";
-        opencv_imgcodecs.imwrite(path + UUID.randomUUID().toString().substring(0, 8) + ".png", image);
+        String name = UUID.randomUUID().toString().substring(0, 8);
+        opencv_imgcodecs.imwrite(path + name + ".png", image);
+        try {
+            FileWriter writer = new FileWriter(path + name + ".txt", true);
+
+            writer.write(debugString);
+            debugString = "";
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Возникла ошибка во время записи, проверьте данные.");
+        }
     }
 
     RubiksCubeDetection(boolean debug) {
@@ -192,17 +203,14 @@ public class RubiksCubeDetection {
                 Mat square = new Mat(face, new Rect(x1 + border, y1 + border, x2 - x1 - border, y2 - y1 - border));
                 String myColor = detectColor(square, debug);
 //                String myColor=detectColorHSV(square, debug);
-
+                debugString="color:" + num + " " + i + " " + j+" "+myColor;
                 if (iMin == 0) {
                     cub.sides[Cub.SideNumber.right.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
-                    if (debug) {
-                        System.out.println(i * 3 + j + 1);
-                    }
                 } else {
                     cub.sides[Cub.SideNumber.front.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
-                    if (debug) {
-                        System.out.println(i * 3 + j + 1);
-                    }
+                }
+                if (debug) {
+                    System.out.println(i * 3 + j + 1);
                 }
                 if (debug) {
                     System.out.println("color:" + num + " " + i + " " + j);
