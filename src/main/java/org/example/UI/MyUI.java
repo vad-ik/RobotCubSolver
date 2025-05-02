@@ -121,6 +121,15 @@ public class MyUI extends JFrame {
         });
         settingPanel.add(sendToArdu);
 
+        JButton speedSettings = new JButton("Настроить задержки");
+        speedSettings.addActionListener(_ -> {
+            new SpeedSettingsUI();
+        });
+        settingPanel.add(speedSettings);
+
+
+
+
         return settingPanel;
     }
 
