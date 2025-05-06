@@ -1,10 +1,10 @@
-package org.example.solver;
+package org.example.solvers.solverLayer;
 
-import org.example.solver.layer.CubSolver1layer;
-import org.example.solver.layer.CubSolver2layer;
-import org.example.solver.layer.CubSolver3layer;
+import org.example.solvers.solverLayer.layer.CubSolver1layer;
+import org.example.solvers.solverLayer.layer.CubSolver2layer;
+import org.example.solvers.solverLayer.layer.CubSolver3layer;
 
-public class Solver {
+public class SolverLayers {
     CubSolver1layer solver1 = new CubSolver1layer();
     CubSolver2layer solver2 = new CubSolver2layer();
     CubSolver3layer solver3 = new CubSolver3layer();

@@ -1,7 +1,7 @@
-package org.example.AI;
+package org.example.solvers.AI;
 
-import org.example.solver.Cub;
-import org.example.solver.Side;
+import org.example.solvers.solverLayer.Cub;
+import org.example.solvers.solverLayer.Side;
 
 import java.util.*;
 //    yellow,0

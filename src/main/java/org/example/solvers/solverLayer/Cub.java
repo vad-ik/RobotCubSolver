@@ -1,4 +1,4 @@
-package org.example.solver;
+package org.example.solvers.solverLayer;
 
 public class Cub {
     public enum SideNumber {
@@ -23,7 +23,7 @@ public class Cub {
             sides[i] = new Side(col);
         }
     }
-    Cub(Cub cub) {
+    public Cub(Cub cub) {
         for (int i = 0; i < sides.length; i++) {
             sides[i] = new Side(cub.sides[i]);
         }

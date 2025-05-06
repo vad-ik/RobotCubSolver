@@ -1,7 +1,7 @@
-package org.example.solver.layer;
+package org.example.solvers.solverLayer.layer;
 
-import org.example.solver.Cub;
-import org.example.solver.Side;
+import org.example.solvers.solverLayer.Cub;
+import org.example.solvers.solverLayer.Side;
 
 public class CubSolver3layer {
 

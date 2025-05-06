@@ -8,8 +8,8 @@ import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.opencv_core.Point;
 import org.bytedeco.opencv.opencv_core.*;
 import org.example.UI.MyException;
-import org.example.solver.Cub;
-import org.example.solver.Side;
+import org.example.solvers.solverLayer.Cub;
+import org.example.solvers.solverLayer.Side;
 
 import java.awt.*;
 import java.io.FileWriter;

@@ -1,7 +1,7 @@
 package org.example.camera;
 
 import org.example.Main;
-import org.example.solver.Cub;
+import org.example.solvers.solverLayer.Cub;
 
 public class ColorScanner {
     public RubiksCubeDetection detector;

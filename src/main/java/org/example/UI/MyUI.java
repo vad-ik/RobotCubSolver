@@ -1,8 +1,10 @@
 package org.example.UI;
 
 import org.example.Main;
-import org.example.solver.Cub;
-import org.example.solver.Side;
+import org.example.solvers.controller.*;
+import org.example.solvers.controller.Solver;
+import org.example.solvers.solverLayer.Cub;
+import org.example.solvers.solverLayer.Side;
 
 import javax.swing.*;
 import java.awt.*;
@@ -128,8 +130,6 @@ public class MyUI extends JFrame {
         settingPanel.add(speedSettings);
 
 
-
-
         return settingPanel;
     }
 
@@ -184,24 +184,22 @@ public class MyUI extends JFrame {
             }
         });
         frame.add(scanBut);
-        JButton startButAI = new JButton("собрать кубик с помощью AI"); // Экземпляр класса JButton
-        startButAI.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                Main.solveAI();
-            }
-        });
-        frame.add(startButAI);
 
-        JButton startBut = new JButton("собрать кубик по слоям"); // Экземпляр класса JButton
+
+        frame.add(addSolver( "собрать кубик с помощью AI",new AIController()));
+        frame.add(addSolver( "собрать кубик по слоям",new LayerController()));
+        frame.add(addSolver( "собрать кубик алгоритмом Коцембы",new KocembaController()));
+    }
+    private JButton addSolver(String name, Solver solver){
+        JButton startBut = new JButton(name); // Экземпляр класса JButton
         startBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Main.solveCub();
+                Main.startSolver(solver);
             }
         });
-        frame.add(startBut);
+        return startBut;
     }
 
     void addBut(JPanel frame, String name) {
@@ -219,7 +217,7 @@ public class MyUI extends JFrame {
                     case "d" -> Main.cub.d();
                     default -> throw new IllegalArgumentException("Invalid input button rotate: " + name);
                 }
-                Main.cub.solver=new StringBuilder();
+                Main.cub.solver = new StringBuilder();
                 Main.radio.writeString(name);
             }
         });

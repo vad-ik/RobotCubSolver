@@ -1,4 +1,4 @@
-package org.example.AI;
+package org.example.solvers.AI;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -60,6 +60,7 @@ public class DeepCubeSolver {
                     }
                     System.out.println("Тело ошибки: " + errorResponse);
                 }
+
             }
         } catch (Exception e) {
             throw new RuntimeException("ошибка при отправке данных на сервер"+e);

@@ -14,6 +14,7 @@ public class Radio {
 
     SerialPort sp = null;
 
+
     public Radio() {
 
         String myPort = Main.scanner.detector.setting.getComPort();
@@ -41,6 +42,12 @@ public class Radio {
             new ComPortSelectionUI();
         }
 
+    }
+    public boolean isActive(){
+        if (sp==null){
+            return false;
+        }
+        return sp.isOpen();
     }
 
     public void writeString(String string) {

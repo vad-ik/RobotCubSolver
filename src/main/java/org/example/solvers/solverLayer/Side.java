@@ -1,4 +1,4 @@
-package org.example.solver;
+package org.example.solvers.solverLayer;
 
 import java.util.Random;
 
