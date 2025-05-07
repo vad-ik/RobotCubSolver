@@ -23,7 +23,7 @@ public class SpeedSettingsUI extends JFrame {
 
 
         panel.add(addLayer(1000, "задержка вращения", 's'));
-        panel.add(addLayer(100, "задержка между поворотом", 'r'));
+        panel.add(addLayer(100, "задержка между поворотом", 'o'));
         add(panel);
         //todo сохранять в настройки
     }
