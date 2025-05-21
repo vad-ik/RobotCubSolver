@@ -52,11 +52,11 @@ void loop() {
 void checkSerial() {
   String str;
   String numStr;
-  int driver = 6;  //   0...5
   // read the incoming byte:
   str = Serial.readString();
   Serial.println(str);
   for (int i = 0; i < str.length(); i++) {
+    int driver = 6;  //   0...5
     Serial.print(i);
     char currentChar = str.charAt(i);
     Serial.print(currentChar);

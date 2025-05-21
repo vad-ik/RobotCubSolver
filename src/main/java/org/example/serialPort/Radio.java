@@ -24,7 +24,6 @@ public class Radio {
         for (SerialPort port : ports) {
             System.out.println(port.getSystemPortName());
             if (myPort.equals(port.getSystemPortName())) {
-
                 sp = port;
             }
         }

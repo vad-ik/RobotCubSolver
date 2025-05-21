@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class KocembaController implements Solver {
 
 
-    private int maxDepth = 24, maxTime = 5;
+    private int maxDepth = 80, maxTime = 5;
     boolean useSeparator = false;
     boolean showString = false;
 

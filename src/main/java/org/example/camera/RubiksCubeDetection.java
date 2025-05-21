@@ -241,13 +241,12 @@ public class RubiksCubeDetection {
 
 
     public static String getColorForRatio(double r, double g, double b, boolean debug) {
-
-        float[] hsv = new float[3];
-        Color.RGBtoHSB((int) r, (int) g, (int) b, hsv);
         r++;
         g++;
         b++;
         if (debug) {
+            float[] hsv = new float[3];
+            Color.RGBtoHSB((int) r, (int) g, (int) b, hsv);
             System.out.println((Arrays.toString(hsv)));
             System.out.println("r/b=" + (r / b));
             System.out.println("r/g=" + (r / g));
