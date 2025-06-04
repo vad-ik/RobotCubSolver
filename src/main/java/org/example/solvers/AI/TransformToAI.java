@@ -13,7 +13,7 @@ import java.util.*;
 
 public class TransformToAI {
 
-    // Структура для хранения данных
+
     private final Map<List<Integer>, Map<Integer, Integer>> dataStorage = new HashMap<>();
 
     public TransformToAI() {
@@ -55,7 +55,7 @@ public class TransformToAI {
 
     }
 
-    // Метод для добавления объекта
+
     public void addObject(List<Integer> keyNumbers, List<Integer> correspondingNumbers) {
         Map<Integer, Integer> correspondingNumbersMap = new HashMap<>();
         for (int i = 0; i < keyNumbers.size(); i++) {
@@ -69,7 +69,7 @@ public class TransformToAI {
         dataStorage.put(key, correspondingNumbersMap);
     }
 
-    // Метод для поиска объекта
+
     public int findObject(List<Integer> keyNumbers, int cod) {
         // Создаем ключ, сортируя числа
         List<Integer> key = new ArrayList<>(keyNumbers);

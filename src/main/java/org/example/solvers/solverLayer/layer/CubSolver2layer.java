@@ -29,13 +29,11 @@ public class CubSolver2layer {
                     } else {
                         setLeft((ret + j) % 4, cub);
                     }
-
-
                     break;
                 }
             }
             if (upLost) {
-                // break;
+
                 for (int i = 0; i < 4; i++) {
                     if (cub.sides[handPosition(i, 2)].cell[6] != CubSolver3layer.upColor &&
                             cub.sides[handPosition(i, 3)].cell[4] != CubSolver3layer.upColor) {

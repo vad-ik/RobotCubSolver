@@ -104,9 +104,9 @@ void checkSerial() {
         delayRotate = numStr.toInt();
         break;
     }
-    bool rotate = true;
+    bool rotate = false;
     if (str.charAt(i + 2) == str.charAt(i + 1) && str.charAt(i + 1) == currentChar) {
-      rotate = false;
+      rotate = true;
       i += 2;
     }
     if (driver != 6) {

@@ -21,7 +21,7 @@ public class KocembaController implements Solver {
         if (showString) {
             System.out.print(side + " " + cell + " ");
         }
-        switch (side) {
+        switch (side) {//перестановка граней по порядку алгоритма коцембы
             case 1 -> side = 3;
             case 3 -> side = 5;
             case 4 -> side = 1;
@@ -31,7 +31,7 @@ public class KocembaController implements Solver {
             System.out.print(side + " " + cell + " ");
             System.out.println(Side.Color.values()[cub.sides[side].cell[cell + 1]]);
         }
-        return cub.sides[side].cell[cell + 1];
+        return cub.sides[side].cell[cell + 1];//нумерация с 0
     }
 
     @Override

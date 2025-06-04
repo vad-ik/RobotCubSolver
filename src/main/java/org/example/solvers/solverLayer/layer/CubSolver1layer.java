@@ -78,29 +78,7 @@ public class CubSolver1layer {
         }
     }
 
-    void solveCross(Cub cub) {
-        while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[2] == downColor) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[4] == downColor) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[6] == downColor) &&
-                (cub.sides[Cub.SideNumber.down.ordinal()].cell[8] == downColor)
-        )) {
-            for (int rot = 0; rot < 4; rot++) {
-                int i = 0;
-                while (!((cub.sides[handPosition(rot, 2)].cell[2] == cub.sides[handPosition(rot, 2)].cell[5]) &&
-                        cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == downColor) &&
-                        i < 5) {
-                    cub.u();
-                    i++;
-                }
-                if (i != 5 && cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == downColor) {
-                    handRotation(cub, rot, 9);
-                    handRotation(cub, rot, 9);
 
-                    break;
-                }
-            }
-        }
-    }
 
     void pasteWhite(Cub cub) {
         while (!((cub.sides[Cub.SideNumber.up.ordinal()].cell[2] == downColor) &&
@@ -148,7 +126,29 @@ public class CubSolver1layer {
             }
         }
     }
+    void solveCross(Cub cub) {
+        while (!((cub.sides[Cub.SideNumber.down.ordinal()].cell[2] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[4] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[6] == downColor) &&
+                (cub.sides[Cub.SideNumber.down.ordinal()].cell[8] == downColor)
+        )) {
+            for (int rot = 0; rot < 4; rot++) {
+                int i = 0;
+                while (!((cub.sides[handPosition(rot, 2)].cell[2] == cub.sides[handPosition(rot, 2)].cell[5]) &&
+                        cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == downColor) &&
+                        i < 5) {
+                    cub.u();
+                    i++;
+                }
+                if (i != 5 && cub.sides[Cub.SideNumber.up.ordinal()].cell[handCell(rot, 8)] == downColor) {
+                    handRotation(cub, rot, 9);
+                    handRotation(cub, rot, 9);
 
+                    break;
+                }
+            }
+        }
+    }
     int upDownPosition(int cell) {
         return switch (cell) {
             case 2 -> 8;

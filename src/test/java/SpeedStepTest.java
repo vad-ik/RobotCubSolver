@@ -17,8 +17,8 @@ public class SpeedStepTest {
         int numTest=1000;
 
         ArrayList<Solver> solvers=new ArrayList<>();
-        //solvers.add(new LayerController());
-        //solvers.add(new AIController());
+        solvers.add(new LayerController());
+        //solvers.add(new AIController()); // ДОЛГО
         solvers.add(new KocembaController());
 
 
@@ -37,7 +37,6 @@ public class SpeedStepTest {
 
                 Utils.chesk(cub);
             }
-          // System.out.println(i);
         }
         for (int j = 0; j <solvers.size() ; j++) {
 
@@ -52,36 +51,5 @@ public class SpeedStepTest {
 
 
 }
-/*
-послойная сборка
-среднее время: 840820.0
-среднее количество шагов: 231.6
-
-deepcube
-среднее время: 2.820797154E10
-среднее количество шагов: 66.4
-////////////////////////////////////
-послойная сборка
-среднее время: 0,84082 мс
-среднее количество шагов: 210.6
-
-deepcube
-среднее время: 20 секунд
-среднее количество шагов: 66.4
 
 
-
-
-послойная сборка
-среднее время: 0,58751 мс
-среднее количество шагов: 206.1
-
-deepcube
-среднее время: 18 секунд
-среднее количество шагов: 30.3
-
-Коцемба
-среднее время: 2.05579931E7
-среднее количество шагов: 77.081
-
- */
