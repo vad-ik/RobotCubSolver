@@ -55,7 +55,6 @@ public class MyUI extends JFrame {
         generalPanel.add(mainPanel);
 
         generalPanel.add(setting());
-
         err = new JPanel();
         err.setOpaque(false);
         generalPanel.add(err);
@@ -129,6 +128,7 @@ public class MyUI extends JFrame {
         });
         settingPanel.add(speedSettings);
 
+        addOneStepModeMenu(settingPanel);
 
         return settingPanel;
     }
@@ -159,6 +159,30 @@ public class MyUI extends JFrame {
             }
         }
         System.out.println("кубик успешно записан");
+    }
+    void addOneStepModeMenu(JPanel frame){
+        JButton oneStepMode = new JButton("Выполнять повороты по одному"); // Экземпляр класса JButton
+        oneStepMode.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(oneStepMode.getText().equals("Выполнять повороты по одному")){
+                    oneStepMode.setText("Выполнять повороты подряд");
+                }else {
+                    oneStepMode.setText("Выполнять повороты по одному");
+                }
+                Main.radio.writeString("a");
+            }
+        });
+        frame.add(oneStepMode);
+
+        JButton nextTurn = new JButton("Следующий поворот"); // Экземпляр класса JButton
+        nextTurn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              Main.radio.writeString("n");
+            }
+        });
+        frame.add(nextTurn);
     }
 
     void addControlButtons(JPanel mainPAnel) {

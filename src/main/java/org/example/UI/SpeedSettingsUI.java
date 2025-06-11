@@ -22,8 +22,8 @@ public class SpeedSettingsUI extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
 
-        panel.add(addLayer(1000, "задержка вращения", 's'));
-        panel.add(addLayer(100, "задержка между поворотом", 'o'));
+        panel.add(addLayer(1000000, "Скорость", 's'));
+        panel.add(addLayer(150000, "Ускорение", 'o'));
         add(panel);
         //todo сохранять в настройки
     }
