@@ -51,6 +51,7 @@ public class Radio {
 
     public void writeString(String string) {
         try {
+            System.out.println("отправлена строка "+string);
             sp.getOutputStream().write((string).getBytes());
             sp.getOutputStream().flush();
         } catch (IOException e) {

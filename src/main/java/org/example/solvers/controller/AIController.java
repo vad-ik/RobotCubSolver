@@ -20,8 +20,12 @@ public class AIController implements Solver {
 
         String path = rotateAI(ans,cub);
         printPath(path,cub);
+        String str=cub.solver.toString();
+        str = str.replaceAll("r`", "rrr").replaceAll("l`", "lll")
+                .replaceAll("u`", "uuu").replaceAll("d`", "ddd")
+                .replaceAll("f`", "fff").replaceAll("b`", "bbb");
         if (radioConnected) {
-            radio.writeString(cub.solver.toString());
+            radio.writeString(str);
         }
     }
     static void printPath(String path,Cub cub) {
@@ -46,6 +50,7 @@ public class AIController implements Solver {
     }
 
     String rotateAI(String str,Cub cub) {
+
         cub.solver = new StringBuilder();
         String[] step = str.split(", ");
 

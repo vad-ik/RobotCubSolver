@@ -128,7 +128,7 @@ public class MyUI extends JFrame {
         });
         settingPanel.add(speedSettings);
 
-        addOneStepModeMenu(settingPanel);
+      //  addOneStepModeMenu(settingPanel);
 
         return settingPanel;
     }
@@ -214,7 +214,34 @@ public class MyUI extends JFrame {
         frame.add(addSolver( "собрать кубик с помощью AI",new AIController()));
         frame.add(addSolver( "собрать кубик по слоям",new LayerController()));
         frame.add(addSolver( "собрать кубик алгоритмом Коцембы",new KocembaController()));
+        frame.add(addSolver( "тестовый алгоритм",new TestController()));
+        frame.add(
+                addTestMode()
+        );
     }
+
+
+    private Component addTestMode() {
+        Checkbox box=new Checkbox("включать тестовый режим");
+        Solver solver=new TestController();
+        Thread run = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    try {
+                        if (box.getState()){
+                            Main.startSolver(solver);
+                        }
+                        Thread.sleep(15000); //1000 - 1 сек
+                    } catch (InterruptedException ex) {
+                    }
+                }
+            }
+        });
+        run.start(); // заводим
+        return box;
+    }
+
     private JButton addSolver(String name, Solver solver){
         JButton startBut = new JButton(name); // Экземпляр класса JButton
         startBut.addActionListener(new AbstractAction() {
@@ -232,6 +259,8 @@ public class MyUI extends JFrame {
         newBut.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Main.cub.solver = new StringBuilder();
+                Main.radio.writeString(name);
                 switch (name) {
                     case "u" -> Main.cub.u();
                     case "l" -> Main.cub.l();
@@ -241,8 +270,7 @@ public class MyUI extends JFrame {
                     case "d" -> Main.cub.d();
                     default -> throw new IllegalArgumentException("Invalid input button rotate: " + name);
                 }
-                Main.cub.solver = new StringBuilder();
-                Main.radio.writeString(name);
+
             }
         });
         frame.add(newBut); // Добавляем кнопку на Frame

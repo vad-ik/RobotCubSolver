@@ -83,11 +83,14 @@ public class ColorScanner {
 
     void sendToArduino(Cub cub) {
         Main.radio.writeString(cub.solver.toString());
+
         cub.solver = new StringBuilder();
+//        System.out.println("try_________________");
         try {
             Thread.sleep(100 * 5);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+
         }
         //todo ждать ответа
     }
@@ -119,3 +122,11 @@ public class ColorScanner {
 //        cub.sides[Cub.SideNumber.right.ordinal()].cell[7] = Side.Color.orange.ordinal();
     }
 }
+/*
+gwgrwwrow
+ogwoobbrg
+gwrogoygo
+bgyyryybb
+rrwrbgywo
+oybbyywbr
+ */

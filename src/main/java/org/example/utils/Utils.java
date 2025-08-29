@@ -1,7 +1,9 @@
+package org.example.utils;
+
 import org.example.solvers.solverLayer.Cub;
 import org.example.solvers.solverLayer.Side;
 
-import java.util.Random;
+import java.util.*;
 
 public class Utils {
     public static void chesk(Cub cub) {
@@ -10,7 +12,7 @@ public class Utils {
         }
     }
 
-    public static void chesk(Side side) {
+    static void chesk(Side side) {
         int col = side.cell[1];
         for (int i = 1; i < 10; i++) {
             if (side.cell[i] != col) {
@@ -19,7 +21,7 @@ public class Utils {
             }
         }
     }
-    public static void cubConfuse(Cub cub,int step) {
+    public static void cubConfuse(Cub cub, int step) {
         Random random = new Random();
         for (int i = 0; i < step; i++) {
 
@@ -46,7 +48,7 @@ public class Utils {
                     break;
             }
         }
-        cub.solver = new StringBuilder();
+
     }
     public static void cubConfuse(Cub cub) {
       cubConfuse( cub,1000);
