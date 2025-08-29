@@ -6,6 +6,7 @@
 
 #define STEPS_90_DEGREES (STEPS_PER_REV * MICROSTEPS/4)
 // скорость двигателя
+
 int SPEED = 200000;
 int acselerat = 25000;
 bool crash = false;

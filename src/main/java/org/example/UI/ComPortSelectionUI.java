@@ -3,6 +3,7 @@ package org.example.UI;
 import com.fazecast.jSerialComm.SerialPort;
 import org.example.Main;
 import org.example.camera.SaveSettings;
+import org.example.serialPort.Radio;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +45,6 @@ public class ComPortSelectionUI extends JFrame {
         for (int i = 0; i < ports.length; i++) {
             portNames[i] = ports[i].getSystemPortName();
         }
-
         // Создаем выпадающий список с именами портов
         return new JComboBox<>(portNames);
     }
@@ -53,6 +53,8 @@ public class ComPortSelectionUI extends JFrame {
         JButton ok = new JButton("Сохранить");
         ok.addActionListener(_ -> {
             Main.scanner.detector.setting.setComPort((String) portComboBox.getSelectedItem());
+            System.out.println("set"+Main.scanner.detector.setting.getComPort());
+            Main.radio=new Radio();
             try {
                 SaveSettings.saveToFile(Main.scanner.detector.setting, "setting");
             } catch (IOException ex) {

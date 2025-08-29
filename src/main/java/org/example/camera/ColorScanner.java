@@ -120,6 +120,11 @@ public class ColorScanner {
 //        cub.sides[Cub.SideNumber.right.ordinal()].cell[4] = Side.Color.orange.ordinal();
 //        cub.sides[Cub.SideNumber.right.ordinal()].cell[8] = Side.Color.orange.ordinal();
 //        cub.sides[Cub.SideNumber.right.ordinal()].cell[7] = Side.Color.orange.ordinal();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 /*
