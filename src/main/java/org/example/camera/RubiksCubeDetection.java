@@ -203,7 +203,7 @@ public class RubiksCubeDetection {
                 Mat square = new Mat(face, new Rect(x1 + border, y1 + border, x2 - x1 - border, y2 - y1 - border));
                 String myColor = detectColor(square, debug);
 //                String myColor=detectColorHSV(square, debug);
-                debugString="color:" + num + " " + i + " " + j+" "+myColor;
+                debugString+="color:" + num + " " + i + " " + j+" "+myColor;
                 if (iMin == 0) {
                     cub.sides[Cub.SideNumber.right.ordinal()].cell[i * 3 + j + 1] = Side.Color.valueOf(myColor).ordinal();
                 } else {
@@ -228,7 +228,7 @@ public class RubiksCubeDetection {
         int blue = (int) meanColor.get(0);
         int green = (int) meanColor.get(1);
         int red = (int) meanColor.get(2);
-
+        debugString+="\n" +red+" "+green+" "+blue+" ";
         Color targetColor = new Color(red, green, blue);
         if (debug) {
             System.out.println("rgb(" + red + ", " + green + ", " + blue + ")");

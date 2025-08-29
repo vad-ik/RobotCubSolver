@@ -13,7 +13,6 @@ public class SaveSettings {
     private int camPort;
     private String comPort;
 
-
     public static void saveToFile(SaveSettings config, String filename) throws IOException {
         Gson gson = new GsonBuilder().create();
         try (FileWriter writer = new FileWriter(filename)) {

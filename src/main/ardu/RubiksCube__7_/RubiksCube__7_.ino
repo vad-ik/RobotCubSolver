@@ -6,8 +6,9 @@
 
 #define STEPS_90_DEGREES (STEPS_PER_REV * MICROSTEPS/4)
 // скорость двигателя
-int SPEED = 5000;
-int acselerat = 2000;
+
+int SPEED = 200000;
+int acselerat = 25000;
 bool crash = false;
 int actual = 0;
 struct DriverPins {
@@ -52,6 +53,7 @@ void loop() {
   }
   steppers[actual].run();
   if (!steppers[actual].isRunning() && i < str.length() &&! oneStepMode) {
+    delay(1530);
     next();
   }
 }

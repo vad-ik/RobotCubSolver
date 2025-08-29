@@ -71,6 +71,7 @@ public class TransformToAI {
 
 
     public int findObject(List<Integer> keyNumbers, int cod) {
+//       System.out.println(keyNumbers);
         // Создаем ключ, сортируя числа
         List<Integer> key = new ArrayList<>(keyNumbers);
         Collections.sort(key);

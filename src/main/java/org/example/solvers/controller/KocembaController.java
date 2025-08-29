@@ -1,11 +1,9 @@
 package org.example.solvers.controller;
 
-import org.example.Main;
 import org.example.serialPort.Radio;
 import org.example.solvers.kocemba.Search;
 import org.example.solvers.solverLayer.Cub;
 import org.example.solvers.solverLayer.Side;
-
 
 import java.util.Arrays;
 
@@ -33,6 +31,7 @@ public class KocembaController implements Solver {
         }
         return cub.sides[side].cell[cell + 1];//нумерация с 0
     }
+
 
     @Override
     public void solve(Cub cub, Radio radio, Boolean radioConnected) {
@@ -78,9 +77,9 @@ public class KocembaController implements Solver {
         }
         for (int i = 0; i < result.length(); i++) {
             if (result.charAt(i) == '2') {
-                var arr=result.toCharArray();
+                var arr = result.toCharArray();
                 arr[i] = result.charAt(i - 1);
-                result=String.valueOf(arr);
+                result = String.valueOf(arr);
             }
         }
         if (showString) {
@@ -119,7 +118,10 @@ public class KocembaController implements Solver {
             execute(cub, result.replaceAll(" ", ""));
             if (radioConnected) {
                 radio.writeString(cub.solver.toString());
-            }}
+            } else {
+                System.out.println(cub.solver.toString());
+            }
+        }
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

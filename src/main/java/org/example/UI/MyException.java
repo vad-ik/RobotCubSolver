@@ -19,7 +19,6 @@ public class MyException {
 
         frame.add(panel, BorderLayout.CENTER);
 
-
         frame.setVisible(true); // Делаем окно видимым
     }
 }

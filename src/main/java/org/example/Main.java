@@ -40,6 +40,7 @@ public class Main {
         }else {
             solver.solve(cub, radio, radio.isActive());
         }
+        cub.solver=new StringBuilder();
     }
 
 

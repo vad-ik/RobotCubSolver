@@ -83,11 +83,14 @@ public class ColorScanner {
 
     void sendToArduino(Cub cub) {
         Main.radio.writeString(cub.solver.toString());
+
         cub.solver = new StringBuilder();
+//        System.out.println("try_________________");
         try {
             Thread.sleep(100 * 5);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+
         }
         //todo ждать ответа
     }
@@ -124,3 +127,11 @@ public class ColorScanner {
         }
     }
 }
+/*
+gwgrwwrow
+ogwoobbrg
+gwrogoygo
+bgyyryybb
+rrwrbgywo
+oybbyywbr
+ */

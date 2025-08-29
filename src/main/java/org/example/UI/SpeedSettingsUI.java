@@ -21,9 +21,9 @@ public class SpeedSettingsUI extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
+        panel.add(addLayer(200000, "Скорость", 's'));
+        panel.add(addLayer(25000, "Ускорение", 'o'));
 
-        panel.add(addLayer(10000, "Скорость", 's'));
-        panel.add(addLayer(5000, "Ускорение", 'o'));
         add(panel);
         //todo сохранять в настройки
     }
